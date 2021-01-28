@@ -6,6 +6,7 @@
 #define SFMLTILEMAP_TILEMAPRENDERER_H
 #include "TileMap.h"
 #include <SFML/Graphics.hpp>
+#include "TileRenderer.h"
 
 class TileMapRenderer {
 public:
@@ -15,6 +16,5 @@ private:
     sf::RenderWindow* _window;
     TileMap _tileMap;
 };
-
 
 #endif //SFMLTILEMAP_TILEMAPRENDERER_H

@@ -4,6 +4,3 @@
 
 #include "Tile.h"
 
-bool Tile::checkForCollision(Point point) {
-    return false;
-}

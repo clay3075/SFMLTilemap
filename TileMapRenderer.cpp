@@ -3,7 +3,6 @@
 //
 
 #include "TileMapRenderer.h"
-#include "TileRenderer.h"
 
 void TileMapRenderer::draw() {
     TileRenderer tmp;

@@ -19,11 +19,13 @@ public:
     Dimensions getTileDimension() { return this->tileDimensions; };
     std::vector<std::vector<Tile>> gridData() {return grid; }
     std::string getTexturePath(int type) { return texturePaths.at(type); }
+    bool checkForCollision(int x, int y);
 private:
     //properties
     std::vector<std::vector<Tile>> grid;
     Dimensions tileDimensions{};
     std::map<int, std::string> texturePaths;
+    std::map<int, bool> textureCollisions;
     //methods
     void initGrid(std::string path);
 };

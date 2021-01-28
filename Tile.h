@@ -16,7 +16,6 @@ public:
     void setDimensions(Dimensions dim) { this->dimensions = dim; }
     inline int getType() { return this->type; }
     inline void setType(int type) { this->type = type; }
-    bool checkForCollision(Point point);
     std::string getTexturePath() { return texturePath; }
     void setTexturePath(std::string path) { texturePath = path; }
     bool getCollision() { return collision; }

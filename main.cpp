@@ -23,9 +23,7 @@ int main()
         }
 
         window.clear();
-
         mapRenderer.draw();
-
         window.display();
     }
 

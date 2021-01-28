@@ -7,16 +7,12 @@
 
 void TileRenderer::draw() {
     sf::Sprite sprite;
-    sf::Texture texture;
     Dimensions tileDim = _tile.getDimensions();
     Point tilePos = _tile.getPosition();
-    int spriteX = tilePos.x * tileDim.width;
-    int spriteY = tilePos.y * tileDim.height;
+    float spriteX = tilePos.x * tileDim.width;
+    float spriteY = tilePos.y * tileDim.height;
 
-    if (!texture.loadFromFile(_tile.getTexturePath()))
-    {
-        std::cout << "Failed to load texture";
-    }
+    auto texture = getTexture(_tile.getTexturePath());
 
     sprite.setTexture(texture);
     sprite.setPosition(spriteX, spriteY);
@@ -25,3 +21,23 @@ void TileRenderer::draw() {
     sprite.setScale(tileDim.width/textureWidth, tileDim.height/textureHeight);
     _window->draw(sprite);
 }
+
+sf::Texture TileRenderer::getTexture(std::string id) {
+    sf::Texture texture;
+
+    auto textureIterator = textures.find(id);
+    if (textureIterator != textures.end()) {
+        texture = textureIterator->second;
+    } else {
+        if (id != "" && !texture.loadFromFile(id))
+        {
+            std::cout << "Failed to load texture";
+        } else {
+            textures.insert(std::pair<std::string, sf::Texture>(id, texture));
+        }
+    }
+
+    return texture;
+}
+
+std::map<std::string, sf::Texture> TileRenderer::textures;
