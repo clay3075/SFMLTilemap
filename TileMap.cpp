@@ -7,28 +7,26 @@
 #include <fstream>
 #include <math.h>
 
-const int ASCIIZERO = 48;
-
 TileMap::TileMap(std::string tileMapFilePath) {
+    this->_tileMapFilePath = tileMapFilePath;
     this->initGrid(tileMapFilePath);
 }
 
 void TileMap::printGrid() {
     std::cout << this->tileDimensions.width << "x" << this->tileDimensions.height << std::endl;
-    Tile tmpTile;
+    Tile* tmpTile;
     for(int i = 0; i < grid.size(); i++) {
         for(int j = 0; j < grid[i].size(); j++) {
             tmpTile = grid[i][j];
-            std::cout << "{" << tmpTile.getType() << "," << tmpTile.getCollision() << "} ";
+            std::cout << "{" << tmpTile->getType() << "," << tmpTile->getCollision() << "} ";
         }
         std::cout << std::endl;
     }
 }
 
 void TileMap::initGrid(std::string path) {
-    int posX;
-    int posY;
-    Tile tmpTile;
+    int posX = 0;
+    int posY = 0;
     std::string tmpInput;
 
     std::ifstream stream;
@@ -39,9 +37,7 @@ void TileMap::initGrid(std::string path) {
         int delim = tmpInput.find('x');
         this->tileDimensions.width = std::stoi(tmpInput.substr(0, delim));
         this->tileDimensions.height = std::stoi(tmpInput.substr(delim+1, tmpInput.size()));
-        tmpTile.setDimensions(this->getTileDimension());
 
-        this->grid.push_back(std::vector<Tile>());
         while (std::getline(stream, tmpInput) && tmpInput[0] == '*') {
             int pos, pos2;
             pos = tmpInput.find(";");
@@ -51,34 +47,62 @@ void TileMap::initGrid(std::string path) {
             textureCollisions.insert(std::pair<int, bool>(id, std::stoi(tmpInput.substr(pos2+1))));
         }
 
+        this->grid.push_back(std::vector<Tile*>());
         do {
             int pos;
             tmpInput += " ";
             posX = 0;
             while((pos = tmpInput.find(" ")) != std::string::npos) {
-                tmpTile.setType(std::stoi(tmpInput.substr(0, pos)));
-                tmpTile.setTexturePath(texturePaths[tmpTile.getType()]);
-                tmpTile.setCollision(textureCollisions[tmpTile.getType()]);
-                tmpTile.setPosition(Point(posX, posY));
+                auto tmpTile = new Tile();
+                tmpTile->setType(std::stoi(tmpInput.substr(0, pos)));
+                tmpTile->setTexturePath(texturePaths[tmpTile->getType()]);
+                tmpTile->setCollision(textureCollisions[tmpTile->getType()]);
+                tmpTile->setPosition(Point(posX, posY));
+                tmpTile->setDimensions(this->getTileDimension());
                 this->grid[posY].push_back(tmpTile);
                 tmpInput.erase(0, pos + 1);
                 posX++;
             }
 
             posY++;
-            this->grid.push_back(std::vector<Tile>());
+            this->grid.push_back(std::vector<Tile*>());
         } while (std::getline(stream, tmpInput));
 
         stream.close();
     }
 }
 
-bool TileMap::checkForCollision(int x, int y) {
-    x = round(x/this->tileDimensions.width);
-    y = round(y/this->tileDimensions.height);
+Tile* TileMap::checkForCollision(float x, float y) {
+    x = ceil(x/this->tileDimensions.width) - 1;
+    y = ceil(y/this->tileDimensions.height) - 1;
 
-    if (x >= this->grid.size() || y >= this->grid[x].size())
-        return true;
+    if (y >= this->grid.size() || x >= this->grid[y].size() || y < 0 || x < 0)
+        return NULL;
 
-    return this->grid[x][y].getCollision();
+    Tile* tile = this->grid[y][x];
+
+    return tile->getCollision() ? tile : NULL;
+}
+
+Tile* TileMap::checkForCollision(float left, float top, float width, float height, float boxBuffer) {
+    float xCenter = left + width/2;
+    float yCenter = top + height/2;
+
+    Tile* collisions [4] = {checkForCollision(xCenter, top+boxBuffer), checkForCollision(xCenter, top + height - boxBuffer),
+                            checkForCollision(left + boxBuffer, yCenter), checkForCollision(left + width - boxBuffer, yCenter)};
+
+    for (auto tile : collisions) {
+        if (tile)
+            return tile;
+    }
+
+    return NULL;
+}
+
+void TileMap::reset() {
+    for (auto row : this->grid) {
+        row.clear();
+    }
+    this->grid.clear();
+    this->initGrid(this->_tileMapFilePath);
 }
