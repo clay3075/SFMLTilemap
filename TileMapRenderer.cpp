@@ -7,9 +7,9 @@
 void TileMapRenderer::draw() {
     TileRenderer tmp;
 
-    for (auto row : _tileMap.gridData()) {
-        for (auto tile : row) {
-            tmp = TileRenderer(_window, tile);
+    for (const auto& row : _tileMap.gridData()) {
+        for (Tile* tile : row) {
+            tmp = TileRenderer(_window, *tile);
             tmp.draw();
         }
     }

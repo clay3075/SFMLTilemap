@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "TileMapRenderer.h"
+#include "TileMapEditor.h"
 #include <iostream>
 
 const int SCREEN_WIDTH = 1024;
@@ -7,10 +8,9 @@ const int SCREEN_HEIGHT = 768;
 
 int main()
 {
-    TileMap map("../map.txt");
-
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML Application");
-    TileMapRenderer mapRenderer(&window, map);
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Tilemap Editor");
+    window.setFramerateLimit(60);
+    TileMapEditor editor(&window);
 
     while (window.isOpen())
     {
@@ -22,8 +22,10 @@ int main()
                 window.close();
         }
 
+        editor.update();
+
         window.clear();
-        mapRenderer.draw();
+        editor.draw();
         window.display();
     }
 

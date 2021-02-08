@@ -8,6 +8,11 @@
 
 class Dimensions {
 public:
+    Dimensions() = default;
+    Dimensions(int width, int height) {
+        this->width = width;
+        this->height = height;
+    }
     int width;
     int height;
 };
