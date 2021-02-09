@@ -13,7 +13,8 @@ void BuilderTile::setTexture(sf::Texture* texture) {
         _sprite.setTexture(texture);
         _sprite.setScale(_dimensions.width/(float)texture->getSize().x, _dimensions.height/(float)texture->getSize().y);
     } else {
-        _sprite.setFillColor(sf::Color::Black);
+        _sprite.setFillColor(sf::Color::White);
+        _sprite.setTexture(nullptr);
     }
 
     auto size = sf::Vector2<float>(_dimensions.width, _dimensions.height);
@@ -26,36 +27,30 @@ void BuilderTile::draw(sf::RenderTarget& target, sf::RenderStates states) const 
 }
 
 void BuilderTile::mouseEnter(sf::Texture* texture) {
-    _mouseCaptured = true;
-    _tmpTexture = _currentTexture;
-    _currentTexture = texture;
-
-    if (_currentTexture) {
+    if (!_mouseCaptured) {
+        _mouseCaptured = true;
+        _oldTexture = _currentTexture;
+        _currentTexture = texture;
         setTexture(_currentTexture);
-    }
-    else {
-        _sprite.setFillColor(sf::Color::White);
-        _tmpTexture = nullptr;
-        _currentTexture = nullptr;
     }
 }
 
 void BuilderTile::mouseExit() {
     if (_mouseCaptured) {
-        if (_textureChanged) {
+        if (!_textureChanged) {
+            _currentTexture = _oldTexture;
             setTexture(_currentTexture);
-        } else {
-            setTexture(nullptr);
-            _tmpTexture = nullptr;
-            _currentTexture = nullptr;
         }
         _mouseCaptured = false;
         _textureChanged = false;
+        _oldTexture = nullptr;
     }
 }
 
 void BuilderTile::update(sf::RenderWindow* window, sf::Texture* texture) {
-    auto cursorPos = sf::Mouse::getPosition(*window);
+    auto pixelPos = sf::Mouse::getPosition(*window);
+    sf::Vector2f cursorPos = window->mapPixelToCoords(pixelPos);
+
     if (cursorPos.x > _point.x*_dimensions.width && cursorPos.x < _point.x*_dimensions.width+_dimensions.width &&
             cursorPos.y > _point.y*_dimensions.height && cursorPos.y < _point.y*_dimensions.height+_dimensions.height) {
         mouseEnter(texture);

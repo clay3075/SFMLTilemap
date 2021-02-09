@@ -28,7 +28,7 @@ private:
     sf::RectangleShape _sprite;
     Dimensions _dimensions;
     Point _point;
-    sf::Texture* _tmpTexture = nullptr;
+    sf::Texture* _oldTexture = nullptr;
     sf::Texture* _currentTexture = nullptr;
 };
 

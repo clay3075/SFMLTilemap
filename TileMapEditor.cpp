@@ -7,6 +7,10 @@
 
 TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _window = window;
+    _tileView.zoom(1);
+    _tileView.setViewport(sf::FloatRect(0.0f, .25f, 1, 1));
+    _window->setView(_tileView);
+
     initMap();
     auto texture = new sf::Texture;
     if (!texture->loadFromFile("../ground.png")) {
@@ -34,6 +38,24 @@ void TileMapEditor::update() {
         for (int c = 0; c < _columns; c++) {
             _tiles[r][c]->update(_window, _selectedTexture);
         }
+    }
+    auto pixelPos = sf::Mouse::getPosition(*_window);
+    if ((pixelPos.x > _window->getSize().x - _panBorder && pixelPos.x <= _window->getSize().x) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        _tileView.move(_panSpeed, 0);
+        _window->setView(_tileView);
+    } else if ((pixelPos.x >= 0 && pixelPos.x <  _panBorder ||
+                sf::Keyboard::isKeyPressed(sf::Keyboard::Left))) {
+        _tileView.move(-_panSpeed, 0);
+        _window->setView(_tileView);
+    } else if ((pixelPos.y >= _window->getSize().y*.25 && pixelPos.y < _window->getSize().y*.25 + _panBorder ||
+                sf::Keyboard::isKeyPressed(sf::Keyboard::Down))) {
+        _tileView.move(0, _panSpeed);
+        _window->setView(_tileView);
+    } else if ((pixelPos.y > _window->getSize().y - _panBorder && pixelPos.y <= _window->getSize().y ||
+                sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
+        _tileView.move(0, -_panSpeed);
+        _window->setView(_tileView);
     }
 }
 

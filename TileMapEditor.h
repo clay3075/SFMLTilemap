@@ -23,12 +23,16 @@ public:
     ~TileMapEditor();
 private:
     sf::RenderWindow* _window;
+    sf::View _uiView;
+    sf::View _tileView;
     Dimensions _tileDimensions = Dimensions(64, 64);
     int _rows = 16;
     int _columns = 16;
     std::vector<std::vector<BuilderTile*>> _tiles;
     std::map<int, sf::Texture*> _textures;
     sf::Texture* _selectedTexture = nullptr;
+    float _panSpeed = 5;
+    float _panBorder = 50;
 };
 
 
