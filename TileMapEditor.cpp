@@ -22,7 +22,7 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
 
 void TileMapEditor::initMap() {
     for (int r = 0; r < _rows; r++) {
-        _tiles.push_back(std::vector<BuilderTile*>());
+        _tiles.emplace_back();
         for (int c = 0; c < _columns; c++) {
             auto point = Point(c, r);
             auto tile = new BuilderTile(_tileDimensions, point);
@@ -39,6 +39,7 @@ void TileMapEditor::update() {
             _tiles[r][c]->update(_window, _selectedTexture);
         }
     }
+
     auto pixelPos = sf::Mouse::getPosition(*_window);
     if ((pixelPos.x > _window->getSize().x - _panBorder && pixelPos.x <= _window->getSize().x) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
@@ -69,7 +70,7 @@ void TileMapEditor::draw() {
 
 void TileMapEditor::clearMap() {
     for (int r = 0; r < _rows; r++) {
-        _tiles.push_back(std::vector<BuilderTile*>());
+        _tiles.emplace_back();
         for (int c = 0; c < _columns; c++) {
             delete _tiles[r][c];
         }

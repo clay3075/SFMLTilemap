@@ -4,7 +4,7 @@ project(SFMLTileMap)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Tile.cpp Tile.h Point.h Dimensions.h TileMap.cpp TileMap.h TileMapRenderer.cpp TileMapRenderer.h TileRenderer.cpp TileRenderer.h TileMapEditor.cpp TileMapEditor.h BuilderTile.cpp BuilderTile.h)
+set(SOURCE_FILES main.cpp Tile.cpp Tile.h Point.h Dimensions.h TileMap.cpp TileMap.h TileMapRenderer.cpp TileMapRenderer.h TileRenderer.cpp TileRenderer.h TileMapEditor.cpp TileMapEditor.h BuilderTile.cpp BuilderTile.h TextInput.cpp TextInput.h UIElement.cpp UIElement.h)
 add_executable(TileMapEditor ${SOURCE_FILES})
 include_directories(/usr/local/include)
 
