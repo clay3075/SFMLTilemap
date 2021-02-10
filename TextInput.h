@@ -15,10 +15,38 @@ public:
     TextInput(sf::RenderWindow* window, Dimensions dim, Point position);
     void update(sf::Event event) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-private:
+    void setBorderThickness(const float width) {
+        _shape.setOutlineThickness(width);
+    }
+    void setBorderColor(const sf::Color color) {
+        _shape.setOutlineColor(color);
+    }
+    void setBackgroundColor(sf::Color color) {
+        _shape.setFillColor(color);
+    }
+    void setTextColor(sf::Color color) {
+        _sfText.setFillColor(color);
+    }
+    void setText(std::string text) {
+        _text = text;
+        resizeText();
+    }
+    void setIsEditable(bool editable) {
+        _isEditable = editable;
+    }
+    void setFontSize(int size) {
+        _sfText.setCharacterSize(size);
+        resizeText();
+    }
+    void reposition() override;
+protected:
     std::string _text;
     sf::RectangleShape _shape;
     sf::Text _sfText;
+    bool _isEditable = true;
+
+    void positionText();
+    void resizeText();
 };
 
 

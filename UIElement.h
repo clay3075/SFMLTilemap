@@ -11,11 +11,18 @@
 class UIElement : public sf::Drawable {
 public:
     UIElement(sf::RenderWindow* window, Dimensions dim, Point pos);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override {};
+    void setPosition(Point position) { _position = position; reposition(); }
+    Point getPosition() { return _position; }
+    void setDimensions(Dimensions dimensions) { _dimensions = dimensions; }
+    virtual void reposition() = 0;
+    Dimensions getDimensions() { return _dimensions; }
     virtual void update(sf::Event event);
 protected:
     sf::Font _font;
     sf::RenderWindow* _window;
     bool _hasFocus = false;
+    bool _hover = false;
     Dimensions _dimensions;
     Point _position;
 };

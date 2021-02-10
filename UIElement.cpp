@@ -20,11 +20,13 @@ void UIElement::update(sf::Event event) {
     auto pixelPos = sf::Mouse::getPosition(*_window);
     sf::Vector2f cursorPos = _window->mapPixelToCoords(pixelPos);
 
-    if (cursorPos.x > _position.x*_dimensions.width && cursorPos.x < _position.x*_dimensions.width+_dimensions.width &&
-        cursorPos.y > _position.y*_dimensions.height && cursorPos.y < _position.y*_dimensions.height+_dimensions.height) {
+    if (cursorPos.x > _position.x && cursorPos.x < _position.x+_dimensions.width &&
+        cursorPos.y > _position.y && cursorPos.y < _position.y+_dimensions.height) {
+        _hover = true;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
             _hasFocus = true;
     } else {
+        _hover = false;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
             _hasFocus = false;
     }
