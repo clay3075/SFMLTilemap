@@ -10,13 +10,14 @@
 
 class UIElement : public sf::Drawable {
 public:
-    UIElement(sf::RenderWindow* window, Dimensions dim, Point pos);
+    explicit UIElement(sf::RenderWindow* window, Dimensions dim = Dimensions(), Point pos = Point());
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {};
     void setPosition(Point position) { _position = position; reposition(); }
     Point getPosition() { return _position; }
     void setDimensions(Dimensions dimensions) { _dimensions = dimensions; }
     virtual void reposition() = 0;
-    Dimensions getDimensions() { return _dimensions; }
+
+    virtual Dimensions getDimensions() { return _dimensions; }
     virtual void update(sf::Event event);
 protected:
     sf::Font _font;

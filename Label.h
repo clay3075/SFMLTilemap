@@ -9,7 +9,7 @@
 
 class Label : public TextInput {
 public:
-    Label(sf::RenderWindow *window, const Dimensions &dim, const Point &position);
+    Label(sf::RenderWindow *window, const Dimensions &dim, const Point &position = Point());
 };
 
 

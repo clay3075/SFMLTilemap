@@ -8,7 +8,7 @@
 
 class Button : public Label {
 public:
-    Button(sf::RenderWindow *window, const Dimensions &dim, const Point &position);
+    Button(sf::RenderWindow *window, const Dimensions &dim, const Point &position = Point());
     void update(sf::Event event) override;
     void setOnClick(void (*onClick)()) { _onClick = onClick; }
     void setHoverColor(const sf::Color color) { _hoverColor = color; }

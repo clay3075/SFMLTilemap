@@ -8,15 +8,20 @@
 #include "Dimensions.h"
 #include "Point.h"
 #include "BuilderTile.h"
+#include "TextInput.h"
+#include "UIStack.h"
+#include "Label.h"
+#include "Button.h"
 #include <vector>
 #include <map>
+#include <memory>
 
 class TileMapEditor {
 public:
     explicit TileMapEditor(sf::RenderWindow* window);
-//    void setTileDimensions(Dimensions tileDim) { _tileDimensions = tileDim; }
+    void setTileDimensions(Dimensions tileDim) { _tileDimensions = tileDim; }
     void draw();
-    void update();
+    void update(sf::Event event);
     void initMap();
     void clearMap();
     void clearTextures();
@@ -33,6 +38,28 @@ private:
     sf::Texture* _selectedTexture = nullptr;
     float _panSpeed = 5;
     float _panBorder = 50;
+
+    UIStack* _dimensionStack = nullptr;
+    TextInput* _widthInput = nullptr;
+    TextInput* _heightInput = nullptr;
+    Label* _xLabel = nullptr;
+
+    UIStack* _gridDimLabelStack = nullptr;
+    Label* _rowLabel = nullptr;
+    Label* _columnLabel = nullptr;
+
+    UIStack* _gridDimInputStack = nullptr;
+    TextInput* _rowInput = nullptr;
+    TextInput* _colInput = nullptr;
+
+    Button* _updateButton = nullptr;
+
+    UIStack* _gridSettingsStack = nullptr;
+
+    void updateTileView(sf::Event event);
+    void updateUIView(sf::Event event);
+    void drawTileView();
+    void drawUIView();
 };
 
 

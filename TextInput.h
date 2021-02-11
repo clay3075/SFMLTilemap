@@ -12,7 +12,7 @@
 
 class TextInput : public UIElement {
 public:
-    TextInput(sf::RenderWindow* window, Dimensions dim, Point position);
+    TextInput(sf::RenderWindow* window, Dimensions dim, Point position = Point());
     void update(sf::Event event) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void setBorderThickness(const float width) {
