@@ -9,8 +9,7 @@
 
 TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _window = window;
-
-    _tileView.zoom(1);
+    _tileView.zoom(_zoom);
     _tileView.setViewport(sf::FloatRect(0.0f, .25f, 1, 1));
     _window->setView(_tileView);
 
@@ -61,8 +60,9 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _gridDimInputStack->insert(_rowInput);
     _gridDimInputStack->insert(_colInput);
 
-    _updateButton = new Button(_window, Dimensions(170, 50));
+    _updateButton = new Button<TileMapEditor>(_window, Dimensions(170, 50));
     _updateButton->setText("Update");
+    _updateButton->setOnClick([this] { updateGrid(); });
 
     _gridSettingsStack = new UIStack(Vertical, Point(5, 5));
     _gridSettingsStack->setPadding(5);
@@ -70,6 +70,17 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _gridSettingsStack->insert(_gridDimLabelStack);
     _gridSettingsStack->insert(_gridDimInputStack);
     _gridSettingsStack->insert(_updateButton);
+
+    _zoomStack = new UIStack(Horizontal, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
+    _zoomStack->setPadding(10);
+    _zoomOutButton = new Button<TileMapEditor>(_window, Dimensions(50, 50));
+    _zoomOutButton->setText("-");
+    _zoomOutButton->setOnClick([this] { this->_zoom += .1; this->_tileView.zoom(_zoom); });
+    _zoomInButton = new Button<TileMapEditor>(_window, Dimensions(50, 50));
+    _zoomInButton->setText("+");
+    _zoomInButton->setOnClick([this] { this->_zoom -= .1; this->_tileView.zoom(_zoom); });
+    _zoomStack->insert(_zoomOutButton);
+    _zoomStack->insert(_zoomInButton);
 }
 
 void TileMapEditor::initMap() {
@@ -125,6 +136,10 @@ TileMapEditor::~TileMapEditor() {
     delete _updateButton;
 
     delete _gridSettingsStack;
+
+    delete _zoomStack;
+    delete _zoomInButton;
+    delete _zoomOutButton;
 }
 
 void TileMapEditor::clearTextures() {
@@ -163,6 +178,7 @@ void TileMapEditor::updateUIView(sf::Event event) {
     _window->setView(_uiView);
 
     _gridSettingsStack->update(event);
+    _zoomStack->update(event);
 }
 
 void TileMapEditor::drawTileView() {
@@ -179,5 +195,20 @@ void TileMapEditor::drawUIView() {
     _window->setView(_uiView);
 
     _window->draw(*_gridSettingsStack);
+    _window->draw(*_zoomStack);
+}
+
+void TileMapEditor::updateGrid() {
+    clearMap();
+
+    try {
+        _rows = std::stoi(_rowInput->getText());
+        _columns = std::stoi(_colInput->getText());
+        _tileDimensions = Dimensions(std::stoi(_widthInput->getText()), std::stoi(_heightInput->getText()));
+    } catch (std::exception ex) {
+
+    }
+
+    initMap();
 }
 

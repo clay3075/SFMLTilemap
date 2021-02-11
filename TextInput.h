@@ -31,6 +31,7 @@ public:
         _text = text;
         resizeText();
     }
+    std::string getText() { return _text; }
     void setIsEditable(bool editable) {
         _isEditable = editable;
     }

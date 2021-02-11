@@ -38,6 +38,7 @@ private:
     sf::Texture* _selectedTexture = nullptr;
     float _panSpeed = 5;
     float _panBorder = 50;
+    float _zoom = 1;
 
     UIStack* _dimensionStack = nullptr;
     TextInput* _widthInput = nullptr;
@@ -52,14 +53,19 @@ private:
     TextInput* _rowInput = nullptr;
     TextInput* _colInput = nullptr;
 
-    Button* _updateButton = nullptr;
+    Button<TileMapEditor>* _updateButton = nullptr;
 
     UIStack* _gridSettingsStack = nullptr;
+
+    UIStack* _zoomStack = nullptr;
+    Button<TileMapEditor>* _zoomOutButton = nullptr;
+    Button<TileMapEditor>* _zoomInButton = nullptr;
 
     void updateTileView(sf::Event event);
     void updateUIView(sf::Event event);
     void drawTileView();
     void drawUIView();
+    void updateGrid();
 };
 
 
