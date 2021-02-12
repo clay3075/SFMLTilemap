@@ -7,7 +7,7 @@
 #include "Label.h"
 #include "UIStack.h"
 
-TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
+TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _window = window;
     _tileView.zoom(_zoom);
     _tileView.setViewport(sf::FloatRect(0.0f, .25f, 1, 1));
@@ -16,20 +16,15 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _uiView.zoom(1);
     _uiView.setViewport(sf::FloatRect(0, 0, 1, 1));
 
-    initMap();
-    auto texture = new sf::Texture;
-    if (!texture->loadFromFile("../ground.png")) {
-        std::cout << "Error\n";
-    }
-    _textures.insert({0, texture});
-    _selectedTexture = texture;
+    initMap(filePath);
+    _selectedTexture = mapInfo->getTexture(mapInfo->getTextureIds().front());
 
     _dimensionStack = new UIStack(Horizontal);
     _dimensionStack->setPadding(10);
     _widthInput =new TextInput(_window, Dimensions(120, 50));
-    _widthInput->setText(std::to_string(_tileDimensions.width));
+    _widthInput->setText(std::to_string(mapInfo->getDimensions().width));
     _heightInput = new TextInput(_window, Dimensions(120, 50));
-    _heightInput->setText(std::to_string(_tileDimensions.height));
+    _heightInput->setText(std::to_string(mapInfo->getDimensions().height));
     _xLabel = new Label(_window, Dimensions(30, 50));
     _xLabel->setBackgroundColor(sf::Color::Transparent);
     _xLabel->setTextColor(sf::Color::White);
@@ -54,9 +49,9 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
     _gridDimInputStack = new UIStack(Horizontal);
     _gridDimInputStack->setPadding(50);
     _rowInput = new TextInput(_window, Dimensions(120, 50));
-    _rowInput->setText(std::to_string(_rows));
+    _rowInput->setText(std::to_string(mapInfo->getMap().size()));
     _colInput = new TextInput(_window, Dimensions(120, 50));
-    _colInput->setText(std::to_string(_columns));
+    _colInput->setText(std::to_string(mapInfo->getMap().size() > 0 ? mapInfo->getMap()[0].size() : 0));
     _gridDimInputStack->insert(_rowInput);
     _gridDimInputStack->insert(_colInput);
 
@@ -84,16 +79,23 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window)  {
 }
 
 void TileMapEditor::initMap() {
-    for (int r = 0; r < _rows; r++) {
+    for (int r = 0; r < mapInfo->getMap().size(); r++) {
         _tiles.emplace_back();
-        for (int c = 0; c < _columns; c++) {
+        for (int c = 0; c < mapInfo->getMap()[r].size(); c++) {
             auto point = Point(c, r);
-            auto tile = new BuilderTile(_tileDimensions, point);
+            auto tile = new BuilderTile(mapInfo->getDimensions(), point);
 
-            tile->setTexture(nullptr);
+            if (std::find(mapInfo->getTextureIds().begin(), mapInfo->getTextureIds().end(), mapInfo->getMap()[r][c]) != mapInfo->getTextureIds().end())
+                tile->setTexture(mapInfo->getTexture(mapInfo->getMap()[r][c]));
             _tiles[r].push_back(tile);
         }
     }
+}
+
+void TileMapEditor::initMap(std::string filePath) {
+    mapInfo = TileMapFileInfo::loadMapFromFile(filePath);
+
+    initMap();
 }
 
 void TileMapEditor::update(sf::Event event) {
@@ -107,9 +109,8 @@ void TileMapEditor::draw() {
 }
 
 void TileMapEditor::clearMap() {
-    for (int r = 0; r < _rows; r++) {
-        _tiles.emplace_back();
-        for (int c = 0; c < _columns; c++) {
+    for (int r = 0; r < mapInfo->getMap().size(); r++) {
+        for (int c = 0; c < mapInfo->getMap()[r].size(); c++) {
             delete _tiles[r][c];
         }
     }
@@ -118,7 +119,7 @@ void TileMapEditor::clearMap() {
 
 TileMapEditor::~TileMapEditor() {
     clearMap();
-    clearTextures();
+//    clearTextures();
 
     delete _dimensionStack;
     delete _widthInput;
@@ -140,20 +141,15 @@ TileMapEditor::~TileMapEditor() {
     delete _zoomStack;
     delete _zoomInButton;
     delete _zoomOutButton;
-}
 
-void TileMapEditor::clearTextures() {
-    for (auto textureMap : _textures) {
-        delete textureMap.second;
-    }
-    _textures.clear();
+    delete mapInfo;
 }
 
 void TileMapEditor::updateTileView(sf::Event event) {
     _window->setView(_tileView);
 
-    for (int r = 0; r < _rows; r++) {
-        for (int c = 0; c < _columns; c++) {
+    for (int r = 0; r < mapInfo->getMap().size(); r++) {
+        for (int c = 0; c < mapInfo->getMap()[r].size(); c++) {
             _tiles[r][c]->update(_window, _selectedTexture);
         }
     }
@@ -184,8 +180,8 @@ void TileMapEditor::updateUIView(sf::Event event) {
 void TileMapEditor::drawTileView() {
     _window->setView(_tileView);
 
-    for (int r = 0; r < _rows; r++) {
-        for (int c = 0; c < _columns; c++) {
+    for (int r = 0; r < mapInfo->getMap().size(); r++) {
+        for (int c = 0; c < mapInfo->getMap()[r].size(); c++) {
             _window->draw(*_tiles[r][c]);
         }
     }
@@ -199,16 +195,14 @@ void TileMapEditor::drawUIView() {
 }
 
 void TileMapEditor::updateGrid() {
-    clearMap();
-
     try {
-        _rows = std::stoi(_rowInput->getText());
-        _columns = std::stoi(_colInput->getText());
-        _tileDimensions = Dimensions(std::stoi(_widthInput->getText()), std::stoi(_heightInput->getText()));
+        mapInfo->resetMap(std::stoi(_rowInput->getText()), std::stoi(_colInput->getText()));
+        mapInfo->setDimensions(Dimensions(std::stoi(_widthInput->getText()), std::stoi(_heightInput->getText())));
+        clearMap();
+        initMap();
     } catch (std::exception ex) {
         //TODO: Tell user
     }
 
-    initMap();
 }
 

@@ -12,33 +12,30 @@
 #include "UIStack.h"
 #include "Label.h"
 #include "Button.h"
+#include "TileMapFileInfo.h"
 #include <vector>
 #include <map>
 #include <memory>
 
 class TileMapEditor {
 public:
-    explicit TileMapEditor(sf::RenderWindow* window);
-    void setTileDimensions(Dimensions tileDim) { _tileDimensions = tileDim; }
+    explicit TileMapEditor(sf::RenderWindow* window, std::string filePath);
     void draw();
     void update(sf::Event event);
+    void initMap(std::string filePath);
     void initMap();
     void clearMap();
-    void clearTextures();
     ~TileMapEditor();
 private:
     sf::RenderWindow* _window;
     sf::View _uiView;
     sf::View _tileView;
-    Dimensions _tileDimensions = Dimensions(64, 64);
-    int _rows = 16;
-    int _columns = 16;
     std::vector<std::vector<BuilderTile*>> _tiles;
-    std::map<int, sf::Texture*> _textures;
     sf::Texture* _selectedTexture = nullptr;
     float _panSpeed = 5;
     float _panBorder = 50;
     float _zoom = 1;
+    TileMapFileInfo* mapInfo;
 
     UIStack* _dimensionStack = nullptr;
     TextInput* _widthInput = nullptr;

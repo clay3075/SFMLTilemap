@@ -27,14 +27,14 @@ void TileMap::printGrid() {
 
 void TileMap::initGrid(std::string path) {
     auto mapInfo = TileMapFileInfo::loadMapFromFile(path);
-    tileDimensions = mapInfo.getDimensions();
-    texturePaths = mapInfo.getTexturePaths();
-    textureCollisions = mapInfo.getTextureCollisions();
+    tileDimensions = mapInfo->getDimensions();
+    texturePaths = mapInfo->getTexturePaths();
+    textureCollisions = mapInfo->getTextureCollisions();
 
     grid.emplace_back();
     int rowCount = 0;
     int colCount;
-    for (auto row : mapInfo.getMap()) {
+    for (auto row : mapInfo->getMap()) {
         colCount = 0;
         for (int textureId : row) {
             auto tmpTile = new Tile();
@@ -86,4 +86,3 @@ void TileMap::reset() {
     this->grid.clear();
     this->initGrid(this->_tileMapFilePath);
 }
-

@@ -11,6 +11,8 @@ void BuilderTile::setTexture(sf::Texture* texture) {
     if (texture) {
         _sprite.setFillColor(sf::Color::White);
         _sprite.setTexture(texture);
+        if (_currentTexture == nullptr)
+            _currentTexture = texture;
         _sprite.setScale(_dimensions.width/(float)texture->getSize().x, _dimensions.height/(float)texture->getSize().y);
     } else {
         _sprite.setFillColor(sf::Color::White);

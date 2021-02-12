@@ -1,12 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include "TileMapRenderer.h"
 #include "TileMapEditor.h"
-#include <iostream>
-#include "TextInput.h"
-#include "Label.h"
-#include "Button.h"
-#include "UIStack.h"
-#include <memory>
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
@@ -15,7 +7,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Tilemap Editor");
     window.setFramerateLimit(60);
-    TileMapEditor editor(&window);
+    TileMapEditor editor(&window, "../map.txt");
 
     while (window.isOpen())
     {
