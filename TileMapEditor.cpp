@@ -206,7 +206,7 @@ void TileMapEditor::updateGrid() {
         _columns = std::stoi(_colInput->getText());
         _tileDimensions = Dimensions(std::stoi(_widthInput->getText()), std::stoi(_heightInput->getText()));
     } catch (std::exception ex) {
-
+        //TODO: Tell user
     }
 
     initMap();

@@ -16,7 +16,7 @@ public:
     explicit TileMap(std::string tileMapFilePath);
     ~TileMap() = default;
     void printGrid();
-    Dimensions getTileDimension() { return this->tileDimensions; };
+    Dimensions getTileDimension() { return this->tileDimensions; }
     std::vector<std::vector<Tile*>> gridData() {return grid; }
     std::string getTexturePath(int type) { return texturePaths.at(type); }
     Tile* checkForCollision(float x, float y);

@@ -3,6 +3,7 @@
 //
 
 #include "TileMap.h"
+#include "TileMapFileInfo.h"
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -25,50 +26,29 @@ void TileMap::printGrid() {
 }
 
 void TileMap::initGrid(std::string path) {
-    int posX = 0;
-    int posY = 0;
-    std::string tmpInput;
+    auto mapInfo = TileMapFileInfo::loadMapFromFile(path);
+    tileDimensions = mapInfo.getDimensions();
+    texturePaths = mapInfo.getTexturePaths();
+    textureCollisions = mapInfo.getTextureCollisions();
 
-    std::ifstream stream;
-    stream.open(path);
-
-    if (stream.is_open()) {
-        std::getline(stream, tmpInput);
-        int delim = tmpInput.find('x');
-        this->tileDimensions.width = std::stoi(tmpInput.substr(0, delim));
-        this->tileDimensions.height = std::stoi(tmpInput.substr(delim+1, tmpInput.size()));
-
-        while (std::getline(stream, tmpInput) && tmpInput[0] == '*') {
-            int pos, pos2;
-            pos = tmpInput.find(";");
-            pos2 = tmpInput.find(";", pos+1);
-            int id = std::stoi(tmpInput.substr(1, pos));
-            texturePaths.insert(std::pair<int, std::string>(id, tmpInput.substr(pos+1, pos2-pos-1)));
-            textureCollisions.insert(std::pair<int, bool>(id, std::stoi(tmpInput.substr(pos2+1))));
+    grid.emplace_back();
+    int rowCount = 0;
+    int colCount;
+    for (auto row : mapInfo.getMap()) {
+        colCount = 0;
+        for (int textureId : row) {
+            auto tmpTile = new Tile();
+            tmpTile->setType(textureId);
+            tmpTile->setTexturePath(texturePaths[tmpTile->getType()]);
+            tmpTile->setCollision(textureCollisions[tmpTile->getType()]);
+            tmpTile->setPosition(Point(colCount, rowCount));
+            tmpTile->setDimensions(getTileDimension());
+            this->grid[rowCount].push_back(tmpTile);
+            grid[rowCount].push_back(tmpTile);
+            colCount++;
         }
-
-        this->grid.push_back(std::vector<Tile*>());
-        do {
-            int pos;
-            tmpInput += " ";
-            posX = 0;
-            while((pos = tmpInput.find(" ")) != std::string::npos) {
-                auto tmpTile = new Tile();
-                tmpTile->setType(std::stoi(tmpInput.substr(0, pos)));
-                tmpTile->setTexturePath(texturePaths[tmpTile->getType()]);
-                tmpTile->setCollision(textureCollisions[tmpTile->getType()]);
-                tmpTile->setPosition(Point(posX, posY));
-                tmpTile->setDimensions(this->getTileDimension());
-                this->grid[posY].push_back(tmpTile);
-                tmpInput.erase(0, pos + 1);
-                posX++;
-            }
-
-            posY++;
-            this->grid.push_back(std::vector<Tile*>());
-        } while (std::getline(stream, tmpInput));
-
-        stream.close();
+        grid.emplace_back();
+        rowCount++;
     }
 }
 
@@ -106,3 +86,4 @@ void TileMap::reset() {
     this->grid.clear();
     this->initGrid(this->_tileMapFilePath);
 }
+
