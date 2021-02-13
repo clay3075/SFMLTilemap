@@ -19,13 +19,13 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     initMap(filePath);
     _selectedTexture = mapInfo->getTexture(mapInfo->getTextureIds().front());
 
-    _dimensionStack = new UIStack(Horizontal);
+    auto _dimensionStack = new UIStack(Horizontal);
     _dimensionStack->setPadding(10);
     _widthInput =new TextInput(_window, Dimensions(120, 50));
     _widthInput->setText(std::to_string(mapInfo->getDimensions().width));
     _heightInput = new TextInput(_window, Dimensions(120, 50));
     _heightInput->setText(std::to_string(mapInfo->getDimensions().height));
-    _xLabel = new Label(_window, Dimensions(30, 50));
+    auto _xLabel = new Label(_window, Dimensions(30, 50));
     _xLabel->setBackgroundColor(sf::Color::Transparent);
     _xLabel->setTextColor(sf::Color::White);
     _xLabel->setText("X");
@@ -33,20 +33,20 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _dimensionStack->insert(_xLabel);
     _dimensionStack->insert(_heightInput);
 
-    _gridDimLabelStack = new UIStack(Horizontal);
+    auto _gridDimLabelStack = new UIStack(Horizontal);
     _gridDimLabelStack->setPadding(50);
-    _rowLabel = new Label(_window, Dimensions(120, 50));
+    auto _rowLabel = new Label(_window, Dimensions(120, 50));
     _rowLabel->setBackgroundColor(sf::Color::Transparent);
     _rowLabel->setTextColor(sf::Color::White);
     _rowLabel->setText("Rows");
-    _columnLabel = new Label(_window, Dimensions(120, 50));
+    auto _columnLabel = new Label(_window, Dimensions(120, 50));
     _columnLabel->setBackgroundColor(sf::Color::Transparent);
     _columnLabel->setTextColor(sf::Color::White);
     _columnLabel->setText("Cols");
     _gridDimLabelStack->insert(_rowLabel);
     _gridDimLabelStack->insert(_columnLabel);
 
-    _gridDimInputStack = new UIStack(Horizontal);
+    auto _gridDimInputStack = new UIStack(Horizontal);
     _gridDimInputStack->setPadding(50);
     _rowInput = new TextInput(_window, Dimensions(120, 50));
     _rowInput->setText(std::to_string(mapInfo->getMap().size()));
@@ -55,12 +55,12 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _gridDimInputStack->insert(_rowInput);
     _gridDimInputStack->insert(_colInput);
 
-    _gridSettingsButtonStack = new UIStack(Horizontal);
+    auto _gridSettingsButtonStack = new UIStack(Horizontal);
     _gridSettingsButtonStack->setPadding(10);
-    _updateButton = new Button(_window, Dimensions(170, 50));
+    auto _updateButton = new Button(_window, Dimensions(170, 50));
     _updateButton->setText("Update");
     _updateButton->setOnClick([this] { updateGrid(); });
-    _saveButton = new Button(_window, Dimensions(120, 50));
+    auto _saveButton = new Button(_window, Dimensions(120, 50));
     _saveButton->setText("Save");
     _saveButton->setOnClick([this] { mapInfo->save(); });
     _gridSettingsButtonStack->insert(_updateButton);
@@ -75,17 +75,17 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
 
     _tileOperationStack = new UIStack(Vertical, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
     _tileOperationStack->setPadding(5);
-    _zoomStack = new UIStack(Horizontal);
+    auto _zoomStack = new UIStack(Horizontal);
     _zoomStack->setPadding(10);
-    _zoomOutButton = new Button(_window, Dimensions(50, 50));
+    auto _zoomOutButton = new Button(_window, Dimensions(50, 50));
     _zoomOutButton->setText("-");
     _zoomOutButton->setOnClick([this] { this->_zoom += .1; this->_tileView.zoom(_zoom); });
-    _zoomInButton = new Button(_window, Dimensions(50, 50));
+    auto _zoomInButton = new Button(_window, Dimensions(50, 50));
     _zoomInButton->setText("+");
     _zoomInButton->setOnClick([this] { this->_zoom -= .1; this->_tileView.zoom(_zoom); });
     _zoomStack->insert(_zoomOutButton);
     _zoomStack->insert(_zoomInButton);
-    _textureContainer = new TextureContainer(_window);
+    auto _textureContainer = new TextureContainer(_window);
     _textureContainer->setMaxHorizontalTextureCount(9);
     _tileOperationStack->insert(_zoomStack);
     _tileOperationStack->insert(_textureContainer);
@@ -142,29 +142,8 @@ void TileMapEditor::clearMap() {
 TileMapEditor::~TileMapEditor() {
     clearMap();
 
-//    delete _dimensionStack;
-//    delete _widthInput;
-//    delete _heightInput;
-//    delete _xLabel;
-//
-//    delete _gridDimLabelStack;
-//    delete _rowLabel;
-//    delete _columnLabel;
-//
-//    delete _gridDimInputStack;
-//    delete _rowInput;
-//    delete _colInput;
-//
-//    delete _gridSettingsButtonStack;
-//    delete _updateButton;
-//    delete _saveButton;
-
     delete _gridSettingsStack;
     delete _tileOperationStack;
-//    delete _zoomStack;
-//    delete _zoomInButton;
-//    delete _zoomOutButton;
-//    delete _textureContainer;
 
     delete mapInfo;
 }

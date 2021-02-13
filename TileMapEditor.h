@@ -38,32 +38,15 @@ private:
     float _zoom = 1;
     TileMapFileInfo* mapInfo;
 
-    UIStack* _dimensionStack = nullptr;
+    // These get freed in the stack ui
     TextInput* _widthInput = nullptr;
     TextInput* _heightInput = nullptr;
-    Label* _xLabel = nullptr;
-
-    UIStack* _gridDimLabelStack = nullptr;
-    Label* _rowLabel = nullptr;
-    Label* _columnLabel = nullptr;
-
-    UIStack* _gridDimInputStack = nullptr;
     TextInput* _rowInput = nullptr;
     TextInput* _colInput = nullptr;
 
-    UIStack* _gridSettingsButtonStack = nullptr;
-    Button* _updateButton = nullptr;
-    Button* _saveButton = nullptr;
-
+    // frees all children
     UIStack* _gridSettingsStack = nullptr;
-
     UIStack* _tileOperationStack = nullptr;
-    UIStack* _zoomStack = nullptr;
-    Button* _zoomOutButton = nullptr;
-    Button* _zoomInButton = nullptr;
-    TextureContainer* _textureContainer = nullptr;
-
-
 
     void updateTileView(sf::Event event);
     void updateUIView(sf::Event event);
