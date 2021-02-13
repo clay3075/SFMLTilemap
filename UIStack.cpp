@@ -63,3 +63,9 @@ Dimensions UIStack::getDimensions() {
 
     return dim;
 }
+
+UIStack::~UIStack() {
+    for (auto element : _elements) {
+        delete element;
+    }
+}

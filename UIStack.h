@@ -24,6 +24,8 @@ public:
     void reposition() override;
     Dimensions getDimensions() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    std::vector<UIElement*> getUIElements() { return _elements; }
+    ~UIStack() override;
 
 protected:
     std::vector<UIElement*> _elements;

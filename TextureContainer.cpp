@@ -10,7 +10,24 @@ void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::T
     button->setOnClick([texture, onSelected]() {
         onSelected(texture);
     });
-    if (texture)
+    if (texture) {
         button->setBackgroundTexture(*texture);
-    insert(button);
+    }
+
+    bool inserted = false;
+    for (auto element : getUIElements()) {
+        auto container = (UIStack*)element;
+        if (container->getUIElements().size() < _maxHorizontalTextureCount) {
+            container->insert(button);
+            inserted = true;
+            break;
+        }
+    }
+
+    if (!inserted) {
+        auto newStack = new UIStack(Horizontal);
+        newStack->setPadding(5);
+        newStack->insert(button);
+        insert(newStack);
+    }
 }

@@ -86,6 +86,7 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _zoomStack->insert(_zoomOutButton);
     _zoomStack->insert(_zoomInButton);
     _textureContainer = new TextureContainer(_window);
+    _textureContainer->setMaxHorizontalTextureCount(9);
     _tileOperationStack->insert(_zoomStack);
     _tileOperationStack->insert(_textureContainer);
     for (auto texture : mapInfo->getTextures()) {
@@ -141,30 +142,29 @@ void TileMapEditor::clearMap() {
 TileMapEditor::~TileMapEditor() {
     clearMap();
 
-    delete _dimensionStack;
-    delete _widthInput;
-    delete _heightInput;
-    delete _xLabel;
-
-    delete _gridDimLabelStack;
-    delete _rowLabel;
-    delete _columnLabel;
-
-    delete _gridDimInputStack;
-    delete _rowInput;
-    delete _colInput;
-
-    delete _gridSettingsButtonStack;
-    delete _updateButton;
-    delete _saveButton;
+//    delete _dimensionStack;
+//    delete _widthInput;
+//    delete _heightInput;
+//    delete _xLabel;
+//
+//    delete _gridDimLabelStack;
+//    delete _rowLabel;
+//    delete _columnLabel;
+//
+//    delete _gridDimInputStack;
+//    delete _rowInput;
+//    delete _colInput;
+//
+//    delete _gridSettingsButtonStack;
+//    delete _updateButton;
+//    delete _saveButton;
 
     delete _gridSettingsStack;
-
     delete _tileOperationStack;
-    delete _zoomStack;
-    delete _zoomInButton;
-    delete _zoomOutButton;
-    delete _textureContainer;
+//    delete _zoomStack;
+//    delete _zoomInButton;
+//    delete _zoomOutButton;
+//    delete _textureContainer;
 
     delete mapInfo;
 }
