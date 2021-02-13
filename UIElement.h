@@ -20,6 +20,7 @@ public:
 
     virtual Dimensions getDimensions() { return _dimensions; }
     virtual void update(sf::Event event);
+    virtual void update() {}
 protected:
     sf::Font _font;
     sf::RenderWindow* _window;

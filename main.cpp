@@ -20,6 +20,7 @@ int main()
 
             editor.update(event);
         }
+        editor.update();
 
         window.clear();
         editor.draw();

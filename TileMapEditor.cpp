@@ -221,3 +221,8 @@ void TileMapEditor::textureChanged(BuilderTile *tile, sf::Texture *texture) {
     mapInfo->getMap()[r][c] = id;
 }
 
+void TileMapEditor::update() {
+    _gridSettingsStack->update();
+    _tileOperationStack->update();
+}
+

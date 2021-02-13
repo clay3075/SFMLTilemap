@@ -23,6 +23,7 @@ public:
     explicit TileMapEditor(sf::RenderWindow* window, std::string filePath);
     void draw();
     void update(sf::Event event);
+    void update();
     void initMap(std::string filePath);
     void initMap();
     void clearMap();

@@ -6,6 +6,7 @@
 #define SFMLTILEMAP_TEXTURECONTAINER_H
 #include "UIStack.h"
 #include "Button.h"
+#include "ImageSelector.h"
 #include <SFML/Graphics.hpp>
 
 
@@ -15,14 +16,22 @@ public:
         _window = window;
         _addTextureButton = new Button(window, Dimensions(64, 64));
         _addTextureButton->setText("+");
+        _addTextureButton->setOnClick([this]() {
+            addTextureWindow->show();
+        });
         setPadding(5);
+        addTextureWindow = new ImageSelector(sf::VideoMode(400, 800));
+        addTextureWindow->hide();
     }
+    ~TextureContainer() override;
     void addTexture(sf::Texture* texture, std::function<void(sf::Texture*)> onSelected);
     void addButton(Button* button);
     void removeButton(Button* button);
     void setMaxHorizontalTextureCount(int count) { _maxHorizontalTextureCount = count; }
+    void update() override;
 private:
     sf::RenderWindow* _window;
+    ImageSelector* addTextureWindow;
     int _maxHorizontalTextureCount = 5;
     Button* _addTextureButton;
 };

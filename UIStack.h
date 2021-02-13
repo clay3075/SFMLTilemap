@@ -21,6 +21,7 @@ public:
     void insert(UIElement* element);
     void remove(UIElement* element);
     void update(sf::Event event) override;
+    void update() override;
     void setPadding(int padding) { _padding = padding; }
     void reposition() override;
     Dimensions getDimensions() override;

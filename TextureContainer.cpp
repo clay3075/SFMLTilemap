@@ -44,3 +44,15 @@ void TextureContainer::removeButton(Button *button) {
         container->remove(button);
     }
 }
+
+void TextureContainer::update() {
+    UIStack::update();
+
+    addTextureWindow->update();
+}
+
+TextureContainer::~TextureContainer() {
+    UIStack::~UIStack();
+
+    delete addTextureWindow;
+}
