@@ -8,12 +8,12 @@
 void BuilderTile::setCollision(bool collision) { _collision = collision; }
 
 void BuilderTile::setTexture(sf::Texture* texture) {
+
     if (texture) {
         _sprite.setFillColor(sf::Color::White);
-        _sprite.setTexture(texture);
+        _sprite.setTexture(texture, true);
         if (_currentTexture == nullptr)
             _currentTexture = texture;
-        _sprite.setScale(_dimensions.width/(float)texture->getSize().x, _dimensions.height/(float)texture->getSize().y);
     } else {
         _sprite.setFillColor(sf::Color::White);
         _sprite.setTexture(nullptr);
@@ -22,6 +22,7 @@ void BuilderTile::setTexture(sf::Texture* texture) {
     auto size = sf::Vector2<float>(_dimensions.width, _dimensions.height);
     _sprite.setSize(size);
     _sprite.setPosition(_dimensions.width*_point.x, _dimensions.height*_point.y);
+
     if(_onTextureChanged) _onTextureChanged(this, texture);
 }
 

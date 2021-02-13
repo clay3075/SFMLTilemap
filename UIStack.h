@@ -24,7 +24,8 @@ public:
     void reposition() override;
     Dimensions getDimensions() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-private:
+
+protected:
     std::vector<UIElement*> _elements;
     UIStackDirection _stackDirection;
     int _padding = 0;

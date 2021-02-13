@@ -13,6 +13,7 @@
 #include "Label.h"
 #include "Button.h"
 #include "TileMapFileInfo.h"
+#include "TextureContainer.h"
 #include <vector>
 #include <map>
 #include <memory>
@@ -51,14 +52,18 @@ private:
     TextInput* _colInput = nullptr;
 
     UIStack* _gridSettingsButtonStack = nullptr;
-    Button<TileMapEditor>* _updateButton = nullptr;
-    Button<TileMapEditor>* _saveButton = nullptr;
+    Button* _updateButton = nullptr;
+    Button* _saveButton = nullptr;
 
     UIStack* _gridSettingsStack = nullptr;
 
+    UIStack* _tileOperationStack = nullptr;
     UIStack* _zoomStack = nullptr;
-    Button<TileMapEditor>* _zoomOutButton = nullptr;
-    Button<TileMapEditor>* _zoomInButton = nullptr;
+    Button* _zoomOutButton = nullptr;
+    Button* _zoomInButton = nullptr;
+    TextureContainer* _textureContainer = nullptr;
+
+
 
     void updateTileView(sf::Event event);
     void updateUIView(sf::Event event);

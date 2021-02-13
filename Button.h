@@ -6,7 +6,6 @@
 #define SFMLTILEMAP_BUTTON_H
 #include "Label.h"
 
-template <class T>
 class Button : public Label {
 public:
     Button(sf::RenderWindow *window, const Dimensions &dim, const Point &position = Point()) : Label(window, dim, position) {};
@@ -26,7 +25,6 @@ public:
             setBorderThickness(0);
         }
     }
-//    void setOnClick(void (T::*onClick)()) { _onClick = onClick; }
     void setOnClick(std::function<void()> onClick) { _onClick = onClick; }
     void setHoverColor(const sf::Color color) { _hoverColor = color; }
     void setClickColor(const sf::Color color) { _clickColor = color; }
@@ -36,7 +34,6 @@ public:
         _shape.setTexture(&_backgroundTexture);
     }
 private:
-//    void (T::*_onClick)() = nullptr;
     std::function<void()> _onClick = nullptr;
     bool _canClick = true;
     sf::Color _hoverColor = sf::Color::Green;

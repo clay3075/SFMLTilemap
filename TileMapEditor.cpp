@@ -57,10 +57,10 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
 
     _gridSettingsButtonStack = new UIStack(Horizontal);
     _gridSettingsButtonStack->setPadding(10);
-    _updateButton = new Button<TileMapEditor>(_window, Dimensions(170, 50));
+    _updateButton = new Button(_window, Dimensions(170, 50));
     _updateButton->setText("Update");
     _updateButton->setOnClick([this] { updateGrid(); });
-    _saveButton = new Button<TileMapEditor>(_window, Dimensions(120, 50));
+    _saveButton = new Button(_window, Dimensions(120, 50));
     _saveButton->setText("Save");
     _saveButton->setOnClick([this] { mapInfo->save(); });
     _gridSettingsButtonStack->insert(_updateButton);
@@ -73,16 +73,26 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _gridSettingsStack->insert(_gridDimInputStack);
     _gridSettingsStack->insert(_gridSettingsButtonStack);
 
-    _zoomStack = new UIStack(Horizontal, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
+    _tileOperationStack = new UIStack(Vertical, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
+    _tileOperationStack->setPadding(5);
+    _zoomStack = new UIStack(Horizontal);
     _zoomStack->setPadding(10);
-    _zoomOutButton = new Button<TileMapEditor>(_window, Dimensions(50, 50));
+    _zoomOutButton = new Button(_window, Dimensions(50, 50));
     _zoomOutButton->setText("-");
     _zoomOutButton->setOnClick([this] { this->_zoom += .1; this->_tileView.zoom(_zoom); });
-    _zoomInButton = new Button<TileMapEditor>(_window, Dimensions(50, 50));
+    _zoomInButton = new Button(_window, Dimensions(50, 50));
     _zoomInButton->setText("+");
     _zoomInButton->setOnClick([this] { this->_zoom -= .1; this->_tileView.zoom(_zoom); });
     _zoomStack->insert(_zoomOutButton);
     _zoomStack->insert(_zoomInButton);
+    _textureContainer = new TextureContainer(_window);
+    _tileOperationStack->insert(_zoomStack);
+    _tileOperationStack->insert(_textureContainer);
+    for (auto texture : mapInfo->getTextures()) {
+        _textureContainer->addTexture(texture.second, [this](sf::Texture* selectedTexture) {
+            _selectedTexture = selectedTexture;
+        });
+    }
 }
 
 void TileMapEditor::initMap() {
@@ -97,6 +107,7 @@ void TileMapEditor::initMap() {
             });
             if (std::find(mapInfo->getTextureIds().begin(), mapInfo->getTextureIds().end(), mapInfo->getMap()[r][c]) != mapInfo->getTextureIds().end())
                 tile->setTexture(mapInfo->getTexture(mapInfo->getMap()[r][c]));
+
             _tiles[r].push_back(tile);
         }
     }
@@ -129,7 +140,6 @@ void TileMapEditor::clearMap() {
 
 TileMapEditor::~TileMapEditor() {
     clearMap();
-//    clearTextures();
 
     delete _dimensionStack;
     delete _widthInput;
@@ -150,9 +160,11 @@ TileMapEditor::~TileMapEditor() {
 
     delete _gridSettingsStack;
 
+    delete _tileOperationStack;
     delete _zoomStack;
     delete _zoomInButton;
     delete _zoomOutButton;
+    delete _textureContainer;
 
     delete mapInfo;
 }
@@ -186,7 +198,7 @@ void TileMapEditor::updateUIView(sf::Event event) {
     _window->setView(_uiView);
 
     _gridSettingsStack->update(event);
-    _zoomStack->update(event);
+    _tileOperationStack->update(event);
 }
 
 void TileMapEditor::drawTileView() {
@@ -203,7 +215,7 @@ void TileMapEditor::drawUIView() {
     _window->setView(_uiView);
 
     _window->draw(*_gridSettingsStack);
-    _window->draw(*_zoomStack);
+    _window->draw(*_tileOperationStack);
 }
 
 void TileMapEditor::updateGrid() {
