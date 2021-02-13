@@ -14,6 +14,12 @@ void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::T
         button->setBackgroundTexture(*texture);
     }
 
+    removeButton(_addTextureButton);
+    addButton(button);
+    addButton(_addTextureButton);
+}
+
+void TextureContainer::addButton(Button *button) {
     bool inserted = false;
     for (auto element : getUIElements()) {
         auto container = (UIStack*)element;
@@ -29,5 +35,12 @@ void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::T
         newStack->setPadding(5);
         newStack->insert(button);
         insert(newStack);
+    }
+}
+
+void TextureContainer::removeButton(Button *button) {
+    for (auto element : getUIElements()) {
+        auto container = (UIStack *) element;
+        container->remove(button);
     }
 }

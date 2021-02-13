@@ -69,3 +69,11 @@ UIStack::~UIStack() {
         delete element;
     }
 }
+
+void UIStack::remove(UIElement *element) {
+    auto removeAt = std::find(_elements.begin(), _elements.end(), element);
+    if (removeAt != _elements.end()) {
+        _elements.erase(removeAt);
+    }
+    reposition();
+}

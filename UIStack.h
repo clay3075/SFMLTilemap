@@ -19,6 +19,7 @@ public:
         _stackDirection = stackDirection;
     }
     void insert(UIElement* element);
+    void remove(UIElement* element);
     void update(sf::Event event) override;
     void setPadding(int padding) { _padding = padding; }
     void reposition() override;
