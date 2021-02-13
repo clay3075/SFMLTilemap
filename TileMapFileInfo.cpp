@@ -7,6 +7,7 @@
 
 TileMapFileInfo* TileMapFileInfo::loadMapFromFile(std::string filePath) {
     TileMapFileInfo* mapInfo = new TileMapFileInfo();
+    mapInfo->_tileMapFilePath = filePath;
     int posX = 0;
     int posY = 0;
     std::string tmpInput;
@@ -68,5 +69,34 @@ void TileMapFileInfo::resetMap(int rows, int cols) {
     for (auto row : _map) {
         row.resize(cols, 0);
     }
+}
+
+bool TileMapFileInfo::save() {
+    bool success = true;
+
+    std::ofstream stream;
+    stream.open(_tileMapFilePath);
+
+    if (stream.is_open()) {
+        stream << _tileDimensions.width << 'x' << _tileDimensions.height << std::endl;
+
+        for (auto texture : _textures) {
+            stream << '*' << texture.first << ';' << _texturePaths[texture.first] << ';' << _textureCollisions[texture.first] << std::endl;
+        }
+
+        for (auto row : _map) {
+            int colCount = 1;
+            for (auto col : row) {
+                stream << col << (colCount < row.size() ? ' ' : '\n');
+                colCount++;
+            }
+        }
+
+        stream.close();
+    } else {
+        success = false;
+    }
+
+    return success;
 }
 

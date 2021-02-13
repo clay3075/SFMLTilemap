@@ -55,16 +55,23 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _gridDimInputStack->insert(_rowInput);
     _gridDimInputStack->insert(_colInput);
 
+    _gridSettingsButtonStack = new UIStack(Horizontal);
+    _gridSettingsButtonStack->setPadding(10);
     _updateButton = new Button<TileMapEditor>(_window, Dimensions(170, 50));
     _updateButton->setText("Update");
     _updateButton->setOnClick([this] { updateGrid(); });
+    _saveButton = new Button<TileMapEditor>(_window, Dimensions(120, 50));
+    _saveButton->setText("Save");
+    _saveButton->setOnClick([this] { mapInfo->save(); });
+    _gridSettingsButtonStack->insert(_updateButton);
+    _gridSettingsButtonStack->insert(_saveButton);
 
     _gridSettingsStack = new UIStack(Vertical, Point(5, 5));
     _gridSettingsStack->setPadding(5);
     _gridSettingsStack->insert(_dimensionStack);
     _gridSettingsStack->insert(_gridDimLabelStack);
     _gridSettingsStack->insert(_gridDimInputStack);
-    _gridSettingsStack->insert(_updateButton);
+    _gridSettingsStack->insert(_gridSettingsButtonStack);
 
     _zoomStack = new UIStack(Horizontal, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
     _zoomStack->setPadding(10);
@@ -85,6 +92,9 @@ void TileMapEditor::initMap() {
             auto point = Point(c, r);
             auto tile = new BuilderTile(mapInfo->getDimensions(), point);
 
+            tile->setOnTextureChanged([this](BuilderTile* bT, sf::Texture* t) {
+                textureChanged(bT, t);
+            });
             if (std::find(mapInfo->getTextureIds().begin(), mapInfo->getTextureIds().end(), mapInfo->getMap()[r][c]) != mapInfo->getTextureIds().end())
                 tile->setTexture(mapInfo->getTexture(mapInfo->getMap()[r][c]));
             _tiles[r].push_back(tile);
@@ -134,7 +144,9 @@ TileMapEditor::~TileMapEditor() {
     delete _rowInput;
     delete _colInput;
 
+    delete _gridSettingsButtonStack;
     delete _updateButton;
+    delete _saveButton;
 
     delete _gridSettingsStack;
 
@@ -204,5 +216,17 @@ void TileMapEditor::updateGrid() {
         //TODO: Tell user
     }
 
+}
+
+void TileMapEditor::textureChanged(BuilderTile *tile, sf::Texture *texture) {
+    int id = -1;
+    for (auto tmpTexture : mapInfo->getTextures()) {
+        if (texture == tmpTexture.second) {
+            id = tmpTexture.first;
+        }
+    }
+    int r = tile->getPosition().y;
+    int c = tile->getPosition().x;
+    mapInfo->getMap()[r][c] = id;
 }
 

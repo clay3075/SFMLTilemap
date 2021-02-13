@@ -13,6 +13,7 @@ public:
     std::string getTexturePath(const int type) { return _texturePaths.at(type); }
     std::vector<std::vector<int>>& getMap() { return _map; }
     static TileMapFileInfo* loadMapFromFile(std::string filePath);
+    bool save();
     Dimensions getDimensions() { return _tileDimensions; }
     void setDimensions(Dimensions dim) { _tileDimensions = dim; }
     std::map<int, std::string> getTexturePaths() { return _texturePaths; }
@@ -25,6 +26,7 @@ public:
 
         return ids;
     }
+    std::map<int, sf::Texture*> getTextures() { return _textures; }
     std::map<int, bool> getTextureCollisions() { return  _textureCollisions; }
     std::string getFilePath() { return _tileMapFilePath; }
     void resetMap(int rows = 0, int cols = 0);

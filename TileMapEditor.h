@@ -50,7 +50,9 @@ private:
     TextInput* _rowInput = nullptr;
     TextInput* _colInput = nullptr;
 
+    UIStack* _gridSettingsButtonStack = nullptr;
     Button<TileMapEditor>* _updateButton = nullptr;
+    Button<TileMapEditor>* _saveButton = nullptr;
 
     UIStack* _gridSettingsStack = nullptr;
 
@@ -63,6 +65,7 @@ private:
     void drawTileView();
     void drawUIView();
     void updateGrid();
+    void textureChanged(BuilderTile* tile, sf::Texture* texture);
 };
 
 

@@ -22,6 +22,7 @@ void BuilderTile::setTexture(sf::Texture* texture) {
     auto size = sf::Vector2<float>(_dimensions.width, _dimensions.height);
     _sprite.setSize(size);
     _sprite.setPosition(_dimensions.width*_point.x, _dimensions.height*_point.y);
+    if(_onTextureChanged) _onTextureChanged(this, texture);
 }
 
 void BuilderTile::draw(sf::RenderTarget& target, sf::RenderStates states) const {

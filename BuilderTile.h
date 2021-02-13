@@ -21,6 +21,8 @@ public:
     void mouseEnter(sf::Texture* texture);
     void mouseExit();
     void update(sf::RenderWindow* window, sf::Texture* texture);
+    void setOnTextureChanged(std::function<void(BuilderTile*, sf::Texture*)> onTextureChanged) { _onTextureChanged = onTextureChanged; }
+    Point getPosition() { return _point; }
 private:
     bool _collision = false;
     bool _textureChanged = false;
@@ -30,6 +32,7 @@ private:
     Point _point;
     sf::Texture* _oldTexture = nullptr;
     sf::Texture* _currentTexture = nullptr;
+    std::function<void(BuilderTile*, sf::Texture*)> _onTextureChanged = nullptr;
 };
 
 
