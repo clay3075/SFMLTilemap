@@ -11,7 +11,7 @@ void UIStack::reposition() {
 
     for (auto element : _elements) {
         Point tmp = element->getPosition();
-        if (_stackDirection == Horizontal) {
+        if (_stackDirection == UIStackDirection::Horizontal) {
             tmp.x = positionX;
             tmp.y = _position.y;
         } else {
@@ -34,6 +34,7 @@ void UIStack::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void UIStack::update(sf::Event event) {
+
     for(auto element : _elements) {
         element->update(event);
     }
@@ -50,7 +51,7 @@ Dimensions UIStack::getDimensions() {
     Dimensions dim;
 
     for (auto element : _elements) {
-        if (_stackDirection == Horizontal) {
+        if (_stackDirection == UIStackDirection::Horizontal) {
             dim.width += element->getDimensions().width + _padding;
             if (element->getDimensions().height > dim.height)
                 dim.height = element->getDimensions().height;

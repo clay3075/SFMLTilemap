@@ -5,7 +5,7 @@
 #include "TextureContainer.h"
 #include "Button.h"
 
-TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &position) : UIStack(Vertical, position) {
+TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &position) : UIStack(UIStackDirection::Vertical, position) {
     _window = window;
     _addTextureButton = new Button(window, Dimensions(64, 64));
     _addTextureButton->setTextAlignment(Alignment::Center);
@@ -47,7 +47,7 @@ void TextureContainer::addButton(Button *button) {
     }
 
     if (!inserted) {
-        auto newStack = new UIStack(Horizontal);
+        auto newStack = new UIStack(UIStackDirection::Horizontal);
         newStack->setPadding(5);
         newStack->insert(button);
         insert(newStack);

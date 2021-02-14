@@ -22,8 +22,7 @@ void TextInput::update(sf::Event event) {
     if (_isEditable && _hasFocus && event.type == sf::Event::TextEntered) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
             _text.pop_back();
-        } else if (event.text.unicode < 128 && event.text.unicode != 10)
-        {
+        } else if (event.text.unicode < 128 && event.text.unicode != 10) {
             _text += event.text.unicode;
         }
 

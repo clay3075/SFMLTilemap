@@ -5,6 +5,7 @@
 #ifndef SFMLTILEMAP_UISTACK_H
 #define SFMLTILEMAP_UISTACK_H
 #include "UIElement.h"
+#include "ScrollableUIElement.h"
 #include <vector>
 #include <iostream>
 
