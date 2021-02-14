@@ -14,7 +14,6 @@ ImageSelector::ImageSelector(const sf::VideoMode &mode) : RenderWindow(mode, "Im
     _pathInput->setIsEditable(true);
     _pathInput->setText("..");
     _imageList->insert(_pathInput);
-
     loadImages();
 }
 

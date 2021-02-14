@@ -66,10 +66,8 @@ Dimensions UIStack::getDimensions() {
 }
 
 UIStack::~UIStack() {
-    UIElement::~UIElement();
-
     for (auto element : _elements) {
-        delete element;
+        remove(element, true);
     }
 }
 

@@ -15,10 +15,12 @@ TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &positi
     });
     setPadding(5);
     addTextureWindow = new ImageSelector(sf::VideoMode(1200, 800));
-    addTextureWindow->hide();
     addTextureWindow->setOnImageSelected([this](std::string path){
         if (_onNewImageAdded) _onNewImageAdded(path);
     });
+    _window->setActive(true);
+    _window->requestFocus();
+    addTextureWindow->hide();
 }
 
 void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::Texture *)> onSelected) {
@@ -77,7 +79,9 @@ TextureContainer::~TextureContainer() {
 void TextureContainer::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     UIStack::draw(target, states);
 
+    addTextureWindow->setActive(true);
     addTextureWindow->draw();
+    addTextureWindow->setActive(false);
 }
 
 

@@ -11,7 +11,6 @@
 class UIElement : public sf::Drawable {
 public:
     explicit UIElement(sf::RenderWindow* window, Dimensions dim = Dimensions(), Point pos = Point());
-    virtual ~UIElement() = default;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {};
     void setPosition(Point position) { _position = position; reposition(); }
     Point getPosition() { return _position; }
