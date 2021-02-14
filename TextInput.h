@@ -9,6 +9,7 @@
 #include "Dimensions.h"
 #include "Point.h"
 #include "UIElement.h"
+#include "Alignment.h"
 
 class TextInput : public UIElement {
 public:
@@ -40,11 +41,13 @@ public:
         resizeText();
     }
     void reposition() override;
+    void setTextAlignment(Alignment alignment) { _textAlignment = alignment; }
 protected:
     std::string _text;
     sf::RectangleShape _shape;
     sf::Text _sfText;
     bool _isEditable = true;
+    Alignment _textAlignment = Alignment::Left;
 
     void positionText();
     void resizeText();

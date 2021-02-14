@@ -18,12 +18,13 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
 
     initMap(filePath);
     _selectedTexture = mapInfo->getTexture(mapInfo->getTextureIds().front());
-
     auto _dimensionStack = new UIStack(Horizontal);
     _dimensionStack->setPadding(10);
     _widthInput =new TextInput(_window, Dimensions(120, 50));
+    _widthInput->setTextAlignment(Alignment::Center);
     _widthInput->setText(std::to_string(mapInfo->getDimensions().width));
     _heightInput = new TextInput(_window, Dimensions(120, 50));
+    _heightInput->setTextAlignment(Alignment::Center);
     _heightInput->setText(std::to_string(mapInfo->getDimensions().height));
     auto _xLabel = new Label(_window, Dimensions(30, 50));
     _xLabel->setBackgroundColor(sf::Color::Transparent);
@@ -49,15 +50,17 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     auto _gridDimInputStack = new UIStack(Horizontal);
     _gridDimInputStack->setPadding(50);
     _rowInput = new TextInput(_window, Dimensions(120, 50));
+    _rowInput->setTextAlignment(Alignment::Center);
     _rowInput->setText(std::to_string(mapInfo->getMap().size()));
     _colInput = new TextInput(_window, Dimensions(120, 50));
+    _colInput->setTextAlignment(Alignment::Center);
     _colInput->setText(std::to_string(mapInfo->getMap().size() > 0 ? mapInfo->getMap()[0].size() : 0));
     _gridDimInputStack->insert(_rowInput);
     _gridDimInputStack->insert(_colInput);
 
     auto _gridSettingsButtonStack = new UIStack(Horizontal);
-    _gridSettingsButtonStack->setPadding(10);
-    auto _updateButton = new Button(_window, Dimensions(170, 50));
+    _gridSettingsButtonStack->setPadding(15);
+    auto _updateButton = new Button(_window, Dimensions(150, 50));
     _updateButton->setText("Update");
     _updateButton->setOnClick([this] { updateGrid(); });
     auto _saveButton = new Button(_window, Dimensions(120, 50));
@@ -78,10 +81,12 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     auto _zoomStack = new UIStack(Horizontal);
     _zoomStack->setPadding(10);
     auto _zoomOutButton = new Button(_window, Dimensions(50, 50));
+    _zoomOutButton->setTextAlignment(Alignment::Center);
     _zoomOutButton->setText("-");
     _zoomOutButton->setOnClick([this] { this->_zoom += .1; this->_tileView.zoom(_zoom); });
     auto _zoomInButton = new Button(_window, Dimensions(50, 50));
     _zoomInButton->setText("+");
+    _zoomInButton->setTextAlignment(Alignment::Center);
     _zoomInButton->setOnClick([this] { this->_zoom -= .1; this->_tileView.zoom(_zoom); });
     _zoomStack->insert(_zoomOutButton);
     _zoomStack->insert(_zoomInButton);
@@ -205,9 +210,9 @@ void TileMapEditor::drawUIView() {
 
 void TileMapEditor::updateGrid() {
     try {
+        clearMap();
         mapInfo->resetMap(std::stoi(_rowInput->getText()), std::stoi(_colInput->getText()));
         mapInfo->setDimensions(Dimensions(std::stoi(_widthInput->getText()), std::stoi(_heightInput->getText())));
-        clearMap();
         initMap();
     } catch (std::exception ex) {
         //TODO: Tell user

@@ -8,6 +8,7 @@
 TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &position) : UIStack(Vertical, position) {
     _window = window;
     _addTextureButton = new Button(window, Dimensions(64, 64));
+    _addTextureButton->setTextAlignment(Alignment::Center);
     _addTextureButton->setText("+");
     _addTextureButton->setOnClick([this]() {
         addTextureWindow->show();

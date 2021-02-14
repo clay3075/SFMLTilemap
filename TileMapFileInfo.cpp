@@ -67,7 +67,7 @@ TileMapFileInfo::~TileMapFileInfo() {
 void TileMapFileInfo::resetMap(int rows, int cols) {
     _map.resize(rows, std::vector<int, std::allocator<int>>());
 
-    for (auto row : _map) {
+    for (auto& row : _map) {
         row.resize(cols, 0);
     }
 }

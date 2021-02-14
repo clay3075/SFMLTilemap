@@ -9,7 +9,8 @@ namespace fs = std::filesystem;
 
 ImageSelector::ImageSelector(const sf::VideoMode &mode) : RenderWindow(mode, "Image Selector") {
     _imageList = new UIStack(Vertical, Point(5, 5));
-    _pathInput = new TextInput(this, Dimensions(getSize().x, 50));
+    _imageList->setPadding(5);
+    _pathInput = new TextInput(this, Dimensions(this->getSize().x-10, 50));
     _pathInput->setIsEditable(true);
     _pathInput->setText("..");
     _imageList->insert(_pathInput);
@@ -61,7 +62,7 @@ void ImageSelector::loadImages() {
         for(auto path : paths) {
             if (buttonExistsForPath(path)) continue;
 
-            auto button = new Button(this, Dimensions(getSize().x, 50));
+            auto button = new Button(this, Dimensions(getSize().x-10, 50));
             button->setText(path);
             button->setOnClick([path,this](){
                 if (_onImageSelected) _onImageSelected(path);

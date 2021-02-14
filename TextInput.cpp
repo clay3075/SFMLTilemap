@@ -37,12 +37,44 @@ void TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void TextInput::positionText() {
-    int charSize = _text.size() * _sfText.getCharacterSize();
-    float ratio = charSize / _shape.getSize().x;
-    int x = _shape.getPosition().x + _shape.getSize().x* (1-ratio);
-    x = x < _shape.getPosition().x ? _shape.getPosition().x : x;
+    float x = _shape.getPosition().x;
+    float y = _shape.getPosition().y;
+    int charWidthSize = _text.size() * _sfText.getCharacterSize() * .5;
 
-    _sfText.setPosition(x, _shape.getPosition().y);
+    switch (_textAlignment) {
+        case TopLeft:
+            //do nothing;
+            break;
+        case TopCenter:
+            x += getDimensions().width / 2.0 - charWidthSize / 2.0;
+            break;
+        case TopRight:
+            x += getDimensions().width - charWidthSize;
+            break;
+        case Left:
+            y -= getDimensions().height / 2.0 - _sfText.getCharacterSize()/2.0;
+            break;
+        case Center:
+            y -= getDimensions().height / 2.0 - _sfText.getCharacterSize()/2.0;
+            x += getDimensions().width / 2.0 - charWidthSize / 2.0;
+            break;
+        case Right:
+            y -= getDimensions().height / 2.0 - _sfText.getCharacterSize()/2.0;
+            x += getDimensions().width - charWidthSize;;
+        case BottomLeft:
+            y -= getDimensions().height - _sfText.getCharacterSize();
+            break;
+        case BottomCenter:
+            y -= getDimensions().height - _sfText.getCharacterSize();
+            x += getDimensions().width / 2.0 - _sfText.getCharacterSize()/2.0;
+            break;
+        case BottomRight:
+            y -= getDimensions().height - _sfText.getCharacterSize();
+            x += getDimensions().width - charWidthSize;
+            break;
+    }
+
+    _sfText.setPosition(x, y);
 }
 
 void TextInput::resizeText() {
