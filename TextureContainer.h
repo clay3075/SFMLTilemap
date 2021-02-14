@@ -12,28 +12,21 @@
 
 class TextureContainer : public UIStack {
 public:
-    TextureContainer(sf::RenderWindow* window, const Point &position = Point()) : UIStack(Vertical, position) {
-        _window = window;
-        _addTextureButton = new Button(window, Dimensions(64, 64));
-        _addTextureButton->setText("+");
-        _addTextureButton->setOnClick([this]() {
-            addTextureWindow->show();
-        });
-        setPadding(5);
-        addTextureWindow = new ImageSelector(sf::VideoMode(400, 800));
-        addTextureWindow->hide();
-    }
+    TextureContainer(sf::RenderWindow* window, const Point &position = Point());
     ~TextureContainer() override;
     void addTexture(sf::Texture* texture, std::function<void(sf::Texture*)> onSelected);
     void addButton(Button* button);
     void removeButton(Button* button);
     void setMaxHorizontalTextureCount(int count) { _maxHorizontalTextureCount = count; }
     void update() override;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void setOnNewImageAdded(std::function<void(std::string texturePath)> onNewImageAdded) { _onNewImageAdded = onNewImageAdded; }
 private:
     sf::RenderWindow* _window;
     ImageSelector* addTextureWindow;
     int _maxHorizontalTextureCount = 5;
-    Button* _addTextureButton;
+    Button* _addTextureButton = nullptr;
+    std::function<void(std::string texturePath)> _onNewImageAdded = nullptr;
 };
 
 

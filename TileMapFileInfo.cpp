@@ -60,6 +60,7 @@ TileMapFileInfo::~TileMapFileInfo() {
     for (auto textureInfo : _textures) {
         delete textureInfo.second;
     }
+
     _textures.clear();
 }
 
@@ -98,5 +99,22 @@ bool TileMapFileInfo::save() {
     }
 
     return success;
+}
+
+sf::Texture* TileMapFileInfo::addTexture(std::string texturePath) {
+    auto texture = new sf::Texture();
+    if (!texture->loadFromFile(texturePath)) {
+        delete texture;
+        texture = nullptr;
+    } else {
+        int id = 0;
+        auto ids = getTextureIds();
+        while (std::find(ids.begin(), ids.end(), id) != ids.end()) {
+            id++;
+        }
+        _textures.insert(std::pair<int, sf::Texture*>(id, texture));
+    }
+
+    return texture;
 }
 

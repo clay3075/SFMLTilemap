@@ -18,6 +18,7 @@ public:
     void setDimensions(Dimensions dim) { _tileDimensions = dim; }
     std::map<int, std::string> getTexturePaths() { return _texturePaths; }
     sf::Texture* getTexture(const int id) { return _textures[id]; }
+    sf::Texture* addTexture(std::string texturePath);
     std::vector<int> getTextureIds() {
         std::vector<int> ids;
         for (auto texture : _texturePaths) {

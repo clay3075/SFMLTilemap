@@ -19,14 +19,14 @@ public:
         _stackDirection = stackDirection;
     }
     void insert(UIElement* element);
-    void remove(UIElement* element);
+    void remove(UIElement* element, bool freeMemory = true);
     void update(sf::Event event) override;
     void update() override;
     void setPadding(int padding) { _padding = padding; }
     void reposition() override;
     Dimensions getDimensions() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    std::vector<UIElement*> getUIElements() { return _elements; }
+    std::vector<UIElement*>& getUIElements() { return _elements; }
     ~UIStack() override;
 
 protected:

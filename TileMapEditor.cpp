@@ -89,11 +89,17 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _textureContainer->setMaxHorizontalTextureCount(9);
     _tileOperationStack->insert(_zoomStack);
     _tileOperationStack->insert(_textureContainer);
+    auto onTextureSelected = [this](sf::Texture* selectedTexture) {
+        _selectedTexture = selectedTexture;
+    };
     for (auto texture : mapInfo->getTextures()) {
-        _textureContainer->addTexture(texture.second, [this](sf::Texture* selectedTexture) {
-            _selectedTexture = selectedTexture;
-        });
+        _textureContainer->addTexture(texture.second, onTextureSelected);
     }
+    _textureContainer->setOnNewImageAdded([this, _textureContainer, onTextureSelected](std::string path){
+        auto texture = mapInfo->addTexture(path);
+        if (texture)
+            _textureContainer->addTexture(texture, onTextureSelected);
+    });
 }
 
 void TileMapEditor::initMap() {
