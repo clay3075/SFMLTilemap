@@ -4,8 +4,8 @@
 
 #ifndef SFMLTILEMAP_TILE_H
 #define SFMLTILEMAP_TILE_H
-#include "UI/Point.h"
-#include "UI/Dimensions.h"
+#include "../UI/Point.h"
+#include "../UI/Dimensions.h"
 #include <string>
 
 class Tile {

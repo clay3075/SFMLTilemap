@@ -5,7 +5,7 @@
 #ifndef SFMLTILEMAP_TILEMAP_H
 #define SFMLTILEMAP_TILEMAP_H
 #include "Tile.h"
-#include "UI/Dimensions.h"
+#include "../UI/Dimensions.h"
 #include <vector>
 #include <string>
 #include <map>

@@ -4,8 +4,8 @@
 
 #include <iostream>
 #include "TileRenderer.h"
-#include "UI/Dimensions.h"
-#include "UI/Point.h"
+#include "../UI/Dimensions.h"
+#include "../UI/Point.h"
 
 void TileRenderer::draw() {
     sf::Sprite sprite;

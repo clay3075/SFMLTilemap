@@ -6,7 +6,7 @@
 #define SFMLTILEMAP_TILEMAPFILEINFO_H
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "UI/Dimensions.h"
+#include "../UI/Dimensions.h"
 
 class TileMapFileInfo {
 public:

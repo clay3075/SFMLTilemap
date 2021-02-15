@@ -12,7 +12,7 @@
 #include "UI/UIStack.h"
 #include "UI/Label.h"
 #include "UI/Button.h"
-#include "TileMapFileInfo.h"
+#include "TileMap/TileMapFileInfo.h"
 #include "UI/TextureContainer.h"
 #include <vector>
 #include <map>
