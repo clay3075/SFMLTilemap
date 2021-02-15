@@ -11,12 +11,14 @@ TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &positi
     _addTextureButton->setTextAlignment(Alignment::Center);
     _addTextureButton->setText("+");
     _addTextureButton->setOnClick([this]() {
+        addTextureWindow->setPosition(sf::Vector2i(0,0));
         addTextureWindow->show();
     });
     setPadding(5);
     addTextureWindow = new ImageSelector(sf::VideoMode(1200, 800));
     addTextureWindow->setOnImageSelected([this](std::string path){
         if (_onNewImageAdded) _onNewImageAdded(path);
+        addTextureWindow->hide();
     });
     _window->setActive(true);
     _window->requestFocus();

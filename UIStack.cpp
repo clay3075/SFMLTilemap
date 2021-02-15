@@ -74,7 +74,7 @@ UIStack::~UIStack() {
 void UIStack::remove(UIElement *element, bool freeMemory) {
     auto removeAt = std::find(_elements.begin(), _elements.end(), element);
     if (removeAt != _elements.end()) {
-        if (freeMemory) delete *removeAt;
+        if (freeMemory && *removeAt) delete *removeAt;
         _elements.erase(removeAt);
 
         reposition();

@@ -1,11 +1,5 @@
 64x64
 *1;../ground.png;1
-*2;../image.png;0
-*3;../image.png;0
-*4;../image.png;0
-*5;../image.png;0
-*6;../image.png;0
-*7;../image.png;0
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

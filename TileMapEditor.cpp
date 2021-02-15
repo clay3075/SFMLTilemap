@@ -59,7 +59,7 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _gridDimInputStack->insert(_colInput);
 
     auto _gridSettingsButtonStack = new UIStack(Horizontal);
-    _gridSettingsButtonStack->setPadding(15);
+    _gridSettingsButtonStack->setPadding(20);
     auto _updateButton = new Button(_window, Dimensions(150, 50));
     _updateButton->setText("Update");
     _updateButton->setOnClick([this] { updateGrid(); });
@@ -78,6 +78,9 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
 
     _tileOperationStack = new UIStack(Vertical, Point(_gridSettingsStack->getDimensions().width + _gridSettingsStack->getPosition().x, 5));
     _tileOperationStack->setPadding(5);
+    auto _zoomLabel = new Label(_window, Dimensions(90, 40));
+    _zoomLabel->setTextAlignment(Alignment::Center);
+    _zoomLabel->setText("Zoom");
     auto _zoomStack = new UIStack(Horizontal);
     _zoomStack->setPadding(10);
     auto _zoomOutButton = new Button(_window, Dimensions(50, 50));
@@ -92,6 +95,7 @@ TileMapEditor::TileMapEditor(sf::RenderWindow *window, std::string filePath)  {
     _zoomStack->insert(_zoomInButton);
     auto _textureContainer = new TextureContainer(_window);
     _textureContainer->setMaxHorizontalTextureCount(9);
+    _tileOperationStack->insert(_zoomLabel);
     _tileOperationStack->insert(_zoomStack);
     _tileOperationStack->insert(_textureContainer);
     auto onTextureSelected = [this](sf::Texture* selectedTexture) {
