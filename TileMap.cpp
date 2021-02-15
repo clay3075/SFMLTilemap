@@ -41,7 +41,7 @@ void TileMap::initGrid(std::string path) {
             tmpTile->setType(textureId);
             tmpTile->setTexturePath(texturePaths[tmpTile->getType()]);
             tmpTile->setCollision(textureCollisions[tmpTile->getType()]);
-            tmpTile->setPosition(Point(colCount, rowCount));
+            tmpTile->setPosition(UI::Point(colCount, rowCount));
             tmpTile->setDimensions(getTileDimension());
             this->grid[rowCount].push_back(tmpTile);
             grid[rowCount].push_back(tmpTile);

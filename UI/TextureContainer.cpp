@@ -4,18 +4,23 @@
 
 #include "TextureContainer.h"
 #include "Button.h"
+#include "Alignment.h"
+#include "Dimensions.h"
+#include "ImageSelector.h"
+#include "Point.h"
+#include "UIStack.h"
 
-TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &position) : UIStack(UIStackDirection::Vertical, position) {
+UI::TextureContainer::TextureContainer(sf::RenderWindow *window, const UI::Point &position) : UIStack(UIStackDirection::Vertical, position) {
     _window = window;
-    _addTextureButton = new Button(window, Dimensions(64, 64));
-    _addTextureButton->setTextAlignment(Alignment::Center);
+    _addTextureButton = new UI::Button(window, UI::Dimensions(64, 64));
+    _addTextureButton->setTextAlignment(UI::Alignment::Center);
     _addTextureButton->setText("+");
     _addTextureButton->setOnClick([this]() {
         addTextureWindow->setPosition(sf::Vector2i(0,0));
         addTextureWindow->show();
     });
     setPadding(5);
-    addTextureWindow = new ImageSelector(sf::VideoMode(1200, 800));
+    addTextureWindow = new UI::ImageSelector(sf::VideoMode(1200, 800));
     addTextureWindow->setOnImageSelected([this](std::string path){
         if (_onNewImageAdded) _onNewImageAdded(path);
         addTextureWindow->hide();
@@ -25,8 +30,8 @@ TextureContainer::TextureContainer(sf::RenderWindow *window, const Point &positi
     addTextureWindow->hide();
 }
 
-void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::Texture *)> onSelected) {
-    auto button = new Button(_window, Dimensions(64, 64));
+void UI::TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::Texture *)> onSelected) {
+    auto button = new UI::Button(_window, UI::Dimensions(64, 64));
     button->setOnClick([texture, onSelected]() {
         onSelected(texture);
     });
@@ -39,7 +44,7 @@ void TextureContainer::addTexture(sf::Texture *texture, std::function<void(sf::T
     addButton(_addTextureButton);
 }
 
-void TextureContainer::addButton(Button *button) {
+void UI::TextureContainer::addButton(UI::Button *button) {
     bool inserted = false;
     for (auto element : getUIElements()) {
         auto container = (UIStack*)element;
@@ -58,27 +63,27 @@ void TextureContainer::addButton(Button *button) {
     }
 }
 
-void TextureContainer::removeButton(Button *button) {
+void UI::TextureContainer::removeButton(UI::Button *button) {
     for (auto element : getUIElements()) {
         auto container = (UIStack *) element;
         container->remove(button, false);
     }
 }
 
-void TextureContainer::update() {
+void UI::TextureContainer::update() {
     UIStack::update();
 
     addTextureWindow->update();
 }
 
-TextureContainer::~TextureContainer() {
+UI::TextureContainer::~TextureContainer() {
     UIStack::~UIStack();
 
     addTextureWindow->close();
     delete addTextureWindow;
 }
 
-void TextureContainer::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void UI::TextureContainer::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     UIStack::draw(target, states);
 
     addTextureWindow->setActive(true);

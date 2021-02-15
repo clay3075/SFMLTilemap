@@ -4,13 +4,16 @@
 
 #include <iostream>
 #include "UIStack.h"
+#include "Dimensions.h"
+#include "Point.h"
+#include "UIElement.h"
 
-void UIStack::reposition() {
+void UI::UIStack::reposition() {
     int positionX = _position.x;
     int positionY = _position.y;
 
     for (auto element : _elements) {
-        Point tmp = element->getPosition();
+        UI::Point tmp = element->getPosition();
         if (_stackDirection == UIStackDirection::Horizontal) {
             tmp.x = positionX;
             tmp.y = _position.y;
@@ -27,28 +30,28 @@ void UIStack::reposition() {
     }
 }
 
-void UIStack::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void UI::UIStack::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for(auto element : _elements) {
         element->draw(target, states);
     }
 }
 
-void UIStack::update(sf::Event event) {
+void UI::UIStack::update(sf::Event event) {
 
     for(auto element : _elements) {
         element->update(event);
     }
 }
 
-void UIStack::insert(UIElement* element) {
+void UI::UIStack::insert(UIElement* element) {
     _elements.push_back(element);
     reposition();
 }
 
-Dimensions UIStack::getDimensions() {
-    UIElement::getDimensions();
+UI::Dimensions UI::UIStack::getDimensions() {
+    UI::UIElement::getDimensions();
 
-    Dimensions dim;
+    UI::Dimensions dim;
 
     for (auto element : _elements) {
         if (_stackDirection == UIStackDirection::Horizontal) {
@@ -65,13 +68,13 @@ Dimensions UIStack::getDimensions() {
     return dim;
 }
 
-UIStack::~UIStack() {
+UI::UIStack::~UIStack() {
     for (auto element : _elements) {
         remove(element, true);
     }
 }
 
-void UIStack::remove(UIElement *element, bool freeMemory) {
+void UI::UIStack::remove(UIElement *element, bool freeMemory) {
     auto removeAt = std::find(_elements.begin(), _elements.end(), element);
     if (removeAt != _elements.end()) {
         if (freeMemory && *removeAt) delete *removeAt;
@@ -81,8 +84,8 @@ void UIStack::remove(UIElement *element, bool freeMemory) {
     }
 }
 
-void UIStack::update() {
-    UIElement::update();
+void UI::UIStack::update() {
+    UI::UIElement::update();
 
     for(auto element : _elements) {
         element->update();

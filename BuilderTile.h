@@ -5,12 +5,12 @@
 #ifndef SFMLTILEMAP_BUILDERTILE_H
 #define SFMLTILEMAP_BUILDERTILE_H
 #include <SFML/Graphics.hpp>
-#include "Point.h"
-#include "Dimensions.h"
+#include "UI/Point.h"
+#include "UI/Dimensions.h"
 
 class BuilderTile : public sf::Drawable {
 public:
-    explicit BuilderTile(Dimensions dim, Point point) {
+    explicit BuilderTile(UI::Dimensions dim, UI::Point point) {
         _dimensions = dim;
         _point = point;
         _sprite.setFillColor(sf::Color::Black);
@@ -22,14 +22,14 @@ public:
     void mouseExit();
     void update(sf::RenderWindow* window, sf::Texture* texture);
     void setOnTextureChanged(std::function<void(BuilderTile*, sf::Texture*)> onTextureChanged) { _onTextureChanged = onTextureChanged; }
-    Point getPosition() { return _point; }
+    UI::Point getPosition() { return _point; }
 private:
     bool _collision = false;
     bool _textureChanged = false;
     bool _mouseCaptured = false;
     sf::RectangleShape _sprite;
-    Dimensions _dimensions;
-    Point _point;
+    UI::Dimensions _dimensions;
+    UI::Point _point;
     sf::Texture* _oldTexture = nullptr;
     sf::Texture* _currentTexture = nullptr;
     std::function<void(BuilderTile*, sf::Texture*)> _onTextureChanged = nullptr;

@@ -3,11 +3,14 @@
 //
 
 #include "ScrollableUIElement.h"
+#include "Dimensions.h"
+#include "Point.h"
+#include "UIElement.h"
 
-ScrollableUIElement::ScrollableUIElement(sf::RenderWindow *window, const Dimensions &dim, const Point &pos) : UIElement(window, dim, pos){
+UI::ScrollableUIElement::ScrollableUIElement(sf::RenderWindow *window, const UI::Dimensions &dim, const UI::Point &pos) : UIElement(window, dim, pos){
 }
 
-void ScrollableUIElement::update(sf::Event event) {
+void UI::ScrollableUIElement::update(sf::Event event) {
 //    auto tmpView = _window->getView();
     _window->setView(_view);
 
@@ -44,6 +47,6 @@ void ScrollableUIElement::update(sf::Event event) {
 //    _window->setView(tmpView);
 }
 
-void ScrollableUIElement::setViewPort(const sf::FloatRect &viewPort) {
+void UI::ScrollableUIElement::setViewPort(const sf::FloatRect &viewPort) {
     _view.setViewport(viewPort);
 }

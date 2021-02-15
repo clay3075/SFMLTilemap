@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include "UIElement.h"
+#include "Dimensions.h"
+#include "Point.h"
 
-UIElement::UIElement(sf::RenderWindow* window, Dimensions dim, Point pos) {
+UI::UIElement::UIElement(sf::RenderWindow* window, UI::Dimensions dim, UI::Point pos) {
     if (!_font.loadFromFile("../default.ttf"))
     {
         std::cout << "Error loading font";
@@ -16,7 +18,7 @@ UIElement::UIElement(sf::RenderWindow* window, Dimensions dim, Point pos) {
     _position = pos;
 }
 
-void UIElement::update(sf::Event event) {
+void UI::UIElement::update(sf::Event event) {
     auto pixelPos = sf::Mouse::getPosition(*_window);
     sf::Vector2f cursorPos = _window->mapPixelToCoords(pixelPos);
 

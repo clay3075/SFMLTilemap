@@ -6,7 +6,7 @@
 #define SFMLTILEMAP_TILEMAPFILEINFO_H
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Dimensions.h"
+#include "UI/Dimensions.h"
 
 class TileMapFileInfo {
 public:
@@ -14,8 +14,8 @@ public:
     std::vector<std::vector<int>>& getMap() { return _map; }
     static TileMapFileInfo* loadMapFromFile(std::string filePath);
     bool save();
-    Dimensions getDimensions() { return _tileDimensions; }
-    void setDimensions(Dimensions dim) { _tileDimensions = dim; }
+    UI::Dimensions getDimensions() { return _tileDimensions; }
+    void setDimensions(UI::Dimensions dim) { _tileDimensions = dim; }
     std::map<int, std::string> getTexturePaths() { return _texturePaths; }
     sf::Texture* getTexture(const int id) { return _textures[id]; }
     sf::Texture* addTexture(std::string texturePath);
@@ -38,7 +38,7 @@ private:
     std::map<int, std::string> _texturePaths;
     std::map<int, bool> _textureCollisions;
     std::string _tileMapFilePath;
-    Dimensions _tileDimensions{};
+    UI::Dimensions _tileDimensions{};
 };
 
 #endif //SFMLTILEMAP_TILEMAPFILEINFO_H

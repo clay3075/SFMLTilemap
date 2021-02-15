@@ -4,20 +4,24 @@
 
 #include "ImageSelector.h"
 #include "Button.h"
+#include "Dimensions.h"
+#include "Point.h"
+#include "TextInput.h"
+#include "UIStack.h"
 
 namespace fs = std::filesystem;
 
-ImageSelector::ImageSelector(const sf::VideoMode &mode) : RenderWindow(mode, "Image Selector") {
+UI::ImageSelector::ImageSelector(const sf::VideoMode &mode) : RenderWindow(mode, "Image Selector") {
     _imageList = new UIStack(Vertical, Point(5, 5));
     _imageList->setPadding(5);
-    _pathInput = new TextInput(this, Dimensions(this->getSize().x-10, 50));
+    _pathInput = new TextInput(this, UI::Dimensions(this->getSize().x - 10, 50));
     _pathInput->setIsEditable(true);
     _pathInput->setText("..");
     _imageList->insert(_pathInput);
     loadImages();
 }
 
-void ImageSelector::update() {
+void UI::ImageSelector::update() {
     sf::Event event;
 
     while (pollEvent(event))
@@ -37,19 +41,19 @@ void ImageSelector::update() {
     _imageList->update();
 }
 
-void ImageSelector::draw() {
+void UI::ImageSelector::draw() {
     clear();
     _imageList->draw(*this, sf::RenderStates());
     display();
 }
 
-ImageSelector::~ImageSelector() {
+UI::ImageSelector::~ImageSelector() {
     sf::RenderWindow::~RenderWindow();
 
     delete _imageList;
 }
 
-void ImageSelector::loadImages() {
+void UI::ImageSelector::loadImages() {
     try {
         clearButtons();
         std::vector<std::string> paths;
@@ -61,7 +65,7 @@ void ImageSelector::loadImages() {
         for(auto path : paths) {
             if (buttonExistsForPath(path)) continue;
 
-            auto button = new Button(this, Dimensions(getSize().x-10, 50));
+            auto button = new UI::Button(this, UI::Dimensions(getSize().x - 10, 50));
             button->setText(path);
             button->setOnClick([path,this](){
                 if (_onImageSelected) _onImageSelected(path);
@@ -73,11 +77,11 @@ void ImageSelector::loadImages() {
     }
 }
 
-bool ImageSelector::buttonExistsForPath(std::string path) {
+bool UI::ImageSelector::buttonExistsForPath(std::string path) {
     bool exists = false;
     if (_imageList->getUIElements().size() > 1) {
         for (auto iter = _imageList->getUIElements().begin() + 1; iter != _imageList->getUIElements().end(); iter++) {
-            auto button = (Button *) *iter;
+            auto button = (UI::Button *) *iter;
             if (button->getText() == path) {
                 exists = true;
                 break;
@@ -88,7 +92,7 @@ bool ImageSelector::buttonExistsForPath(std::string path) {
     return exists;
 }
 
-void ImageSelector::clearButtons() {
+void UI::ImageSelector::clearButtons() {
 
     if (_imageList->getUIElements().size() > 1) {
         for (auto iter = _imageList->getUIElements().begin() + 1; iter != _imageList->getUIElements().end(); iter++) {

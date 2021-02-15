@@ -4,11 +4,13 @@
 
 #include <iostream>
 #include "TileRenderer.h"
+#include "UI/Dimensions.h"
+#include "UI/Point.h"
 
 void TileRenderer::draw() {
     sf::Sprite sprite;
-    Dimensions tileDim = _tile.getDimensions();
-    Point tilePos = _tile.getPosition();
+    UI::Dimensions tileDim = _tile.getDimensions();
+    UI::Point tilePos = _tile.getPosition();
     float spriteX = tilePos.x * tileDim.width;
     float spriteY = tilePos.y * tileDim.height;
 

@@ -5,15 +5,15 @@
 #ifndef SFMLTILEMAP_TILEMAPEDITOR_H
 #define SFMLTILEMAP_TILEMAPEDITOR_H
 #include <SFML/Graphics.hpp>
-#include "Dimensions.h"
-#include "Point.h"
+#include "UI/Dimensions.h"
+#include "UI/Point.h"
 #include "BuilderTile.h"
-#include "TextInput.h"
-#include "UIStack.h"
-#include "Label.h"
-#include "Button.h"
+#include "UI/TextInput.h"
+#include "UI/UIStack.h"
+#include "UI/Label.h"
+#include "UI/Button.h"
 #include "TileMapFileInfo.h"
-#include "TextureContainer.h"
+#include "UI/TextureContainer.h"
 #include <vector>
 #include <map>
 #include <memory>
@@ -40,14 +40,14 @@ private:
     TileMapFileInfo* mapInfo;
 
     // These get freed in the stack ui
-    TextInput* _widthInput = nullptr;
-    TextInput* _heightInput = nullptr;
-    TextInput* _rowInput = nullptr;
-    TextInput* _colInput = nullptr;
+    UI::TextInput* _widthInput = nullptr;
+    UI::TextInput* _heightInput = nullptr;
+    UI::TextInput* _rowInput = nullptr;
+    UI::TextInput* _colInput = nullptr;
 
     // frees all children
-    UIStack* _gridSettingsStack = nullptr;
-    UIStack* _tileOperationStack = nullptr;
+    UI::UIStack* _gridSettingsStack = nullptr;
+    UI::UIStack* _tileOperationStack = nullptr;
 
     void updateTileView(sf::Event event);
     void updateUIView(sf::Event event);

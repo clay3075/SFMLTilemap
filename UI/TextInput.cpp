@@ -4,8 +4,11 @@
 
 #include <iostream>
 #include "TextInput.h"
+#include "Dimensions.h"
+#include "Point.h"
+#include "UIElement.h"
 
-TextInput::TextInput(sf::RenderWindow *window, Dimensions dim, Point position) : UIElement(window, dim, position) {
+UI::TextInput::TextInput(sf::RenderWindow *window, UI::Dimensions dim, UI::Point position) : UIElement(window, dim, position) {
     _shape.setSize(sf::Vector2f(dim.width, dim.height));
     _shape.setPosition(position.x, position.y);
     _shape.setFillColor(sf::Color::White);
@@ -16,7 +19,7 @@ TextInput::TextInput(sf::RenderWindow *window, Dimensions dim, Point position) :
     _sfText.setFont(_font);
 }
 
-void TextInput::update(sf::Event event) {
+void UI::TextInput::update(sf::Event event) {
     UIElement::update(event);
 
     if (_isEditable && _hasFocus && event.type == sf::Event::TextEntered) {
@@ -30,12 +33,12 @@ void TextInput::update(sf::Event event) {
     }
 }
 
-void TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void UI::TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(_shape);
     target.draw(_sfText);
 }
 
-void TextInput::positionText() {
+void UI::TextInput::positionText() {
     float x = _shape.getPosition().x;
     float y = _shape.getPosition().y;
     int charWidthSize = _text.size() * _sfText.getCharacterSize() * .5;
@@ -76,7 +79,7 @@ void TextInput::positionText() {
     _sfText.setPosition(x, y);
 }
 
-void TextInput::resizeText() {
+void UI::TextInput::resizeText() {
 
     while (_text.size() * _sfText.getCharacterSize()*.55 > _shape.getSize().x) {
         _text.pop_back();
@@ -86,7 +89,7 @@ void TextInput::resizeText() {
     _sfText.setString(_text);
 }
 
-void TextInput::reposition() {
+void UI::TextInput::reposition() {
     _shape.setPosition(_position.x, _position.y);
     positionText();
 }

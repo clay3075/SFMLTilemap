@@ -1,5 +1,5 @@
 #include "TileMapEditor.h"
-#include "ScrollableUIElement.h"
+#include "UI/ScrollableUIElement.h"
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
